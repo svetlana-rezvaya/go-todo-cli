@@ -15,3 +15,13 @@ func marshalNote(note note) string {
 
 	return id + " " + flag + " " + note.Text
 }
+
+func marshalNotes(notes []note) string {
+	result := ""
+	for _, note := range notes {
+		line := marshalNote(note)
+		result = result + line + "\n"
+	}
+
+	return result
+}
