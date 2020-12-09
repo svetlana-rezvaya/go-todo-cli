@@ -1,6 +1,9 @@
 package main
 
-import "strconv"
+import (
+	"strconv"
+	"time"
+)
 
 func marshalNote(note note) string {
 	// add an offset for all ids to have the same width
@@ -13,7 +16,9 @@ func marshalNote(note note) string {
 		flag = "[ ]"
 	}
 
-	return id + " " + flag + " " + note.Text
+	createdAt := note.CreatedAt.Format(time.RFC822Z)
+
+	return id + " " + flag + " " + createdAt + " " + note.Text
 }
 
 func marshalNotes(notes []note) string {
