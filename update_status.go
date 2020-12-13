@@ -1,5 +1,7 @@
 package main
 
+import "time"
+
 func updateStatus(notes []note, id int, status bool) {
 	targetIndex := -1
 	for index, note := range notes {
@@ -12,5 +14,6 @@ func updateStatus(notes []note, id int, status bool) {
 		return
 	}
 
+	notes[targetIndex].UpdatedAt = time.Now()
 	notes[targetIndex].IsDone = status
 }

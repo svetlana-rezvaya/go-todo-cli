@@ -3,6 +3,7 @@ package main
 import (
 	"reflect"
 	"testing"
+	"time"
 )
 
 func Test_updateStatus_empty(test *testing.T) {
@@ -46,6 +47,14 @@ func Test_updateStatus_nonEmptyAndExistingID(test *testing.T) {
 		note{ID: 104, IsDone: false, Text: "five"},
 	}
 	updateStatus(notes, 102, true)
+
+	if len(notes) >= 3 {
+		if time.Since(notes[2].UpdatedAt) > time.Minute {
+			test.Fail()
+		}
+
+		notes[2].UpdatedAt = time.Time{}
+	}
 
 	wantedNotes := []note{
 		note{ID: 100, IsDone: false, Text: "one"},
