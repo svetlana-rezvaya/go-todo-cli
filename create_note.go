@@ -1,6 +1,9 @@
 package main
 
-import "strings"
+import (
+	"strings"
+	"time"
+)
 
 func getMaximalID(notes []note) int {
 	maximalID := 0
@@ -15,7 +18,14 @@ func getMaximalID(notes []note) int {
 
 func createNote(notes []note, text string) []note {
 	id := getMaximalID(notes) + 1
+	currentTime := time.Now()
 	text = strings.TrimSpace(text)
-	note := note{ID: id, IsDone: false, Text: text}
+	note := note{
+		ID:        id,
+		CreatedAt: currentTime,
+		UpdatedAt: currentTime,
+		IsDone:    false,
+		Text:      text,
+	}
 	return append(notes, note)
 }

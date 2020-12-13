@@ -3,6 +3,7 @@ package main
 import (
 	"reflect"
 	"testing"
+	"time"
 )
 
 func Test_getMaximalID_empty(test *testing.T) {
@@ -31,6 +32,18 @@ func Test_getMaximalID_nonEmpty(test *testing.T) {
 func Test_createNote_empty(test *testing.T) {
 	notes := createNote([]note{}, "test")
 
+	if len(notes) != 0 {
+		if time.Since(notes[len(notes)-1].CreatedAt) > time.Minute {
+			test.Fail()
+		}
+		if time.Since(notes[len(notes)-1].UpdatedAt) > time.Minute {
+			test.Fail()
+		}
+
+		notes[len(notes)-1].CreatedAt = time.Time{}
+		notes[len(notes)-1].UpdatedAt = time.Time{}
+	}
+
 	wantedNotes := []note{
 		note{ID: 1, IsDone: false, Text: "test"},
 	}
@@ -48,6 +61,18 @@ func Test_createNote_nonEmpty(test *testing.T) {
 		note{ID: 104, IsDone: false, Text: "five"},
 	}
 	notes = createNote(notes, "test")
+
+	if len(notes) != 0 {
+		if time.Since(notes[len(notes)-1].CreatedAt) > time.Minute {
+			test.Fail()
+		}
+		if time.Since(notes[len(notes)-1].UpdatedAt) > time.Minute {
+			test.Fail()
+		}
+
+		notes[len(notes)-1].CreatedAt = time.Time{}
+		notes[len(notes)-1].UpdatedAt = time.Time{}
+	}
 
 	wantedNotes := []note{
 		note{ID: 100, IsDone: false, Text: "one"},
