@@ -17,7 +17,7 @@ func Test_marshalNote_isNotDone(test *testing.T) {
 	}
 	text := marshalNote(note)
 
-	if text != "10123 [ ] 09 Dec 20 21:05 +0000 test" {
+	if text != "10123 [_] 09 Dec 20 21:05 +0000 test" {
 		test.Fail()
 	}
 }
@@ -73,11 +73,11 @@ func Test_marshalNotes_nonEmpty(test *testing.T) {
 	}
 	text := marshalNotes(notes)
 
-	wantedText := "10100 [ ] 09 Dec 20 21:05 +0000 one\n" +
+	wantedText := "10100 [_] 09 Dec 20 21:05 +0000 one\n" +
 		"10101 [x] 09 Dec 20 22:05 +0000 two\n" +
-		"10102 [ ] 09 Dec 20 23:05 +0000 three\n" +
+		"10102 [_] 09 Dec 20 23:05 +0000 three\n" +
 		"10103 [x] 10 Dec 20 00:05 +0000 four\n" +
-		"10104 [ ] 10 Dec 20 01:05 +0000 five\n"
+		"10104 [_] 10 Dec 20 01:05 +0000 five\n"
 	if text != wantedText {
 		test.Fail()
 	}

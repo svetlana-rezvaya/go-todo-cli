@@ -13,7 +13,7 @@ func marshalNote(note note) string {
 	if note.IsDone {
 		flag = "[x]"
 	} else {
-		flag = "[ ]"
+		flag = "[_]"
 	}
 
 	createdAt := note.CreatedAt.Format(time.RFC822Z)
