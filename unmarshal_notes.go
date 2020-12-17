@@ -32,3 +32,22 @@ func unmarshalNote(line string) (note, error) {
 	note := note{ID: id, CreatedAt: createdAt, IsDone: isDone, Text: parts[7]}
 	return note, nil
 }
+
+func unmarshalNotes(text string) ([]note, error) {
+	notes := []note{}
+	lines := strings.Split(text, "\n")
+	for _, line := range lines {
+		if line == "" {
+			continue
+		}
+
+		note, err := unmarshalNote(line)
+		if err != nil {
+			return nil, err
+		}
+
+		notes = append(notes, note)
+	}
+
+	return notes, nil
+}
