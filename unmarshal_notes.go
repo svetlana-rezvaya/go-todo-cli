@@ -36,14 +36,18 @@ func unmarshalNote(line string) (note, error) {
 func unmarshalNotes(text string) ([]note, error) {
 	notes := []note{}
 	lines := strings.Split(text, "\n")
-	for _, line := range lines {
+	for lineIndex, line := range lines {
 		if line == "" {
 			continue
 		}
 
 		note, err := unmarshalNote(line)
 		if err != nil {
-			return nil, err
+			lineIndexStr := strconv.Itoa(lineIndex + 1)
+			return nil, errors.New(
+				"unable to unmarshal the note in line #" + lineIndexStr + ": " +
+					err.Error(),
+			)
 		}
 
 		notes = append(notes, note)

@@ -151,3 +151,25 @@ func Test_unmarshalNotes_success(test *testing.T) {
 		test.Fail()
 	}
 }
+
+func Test_unmarshalNotes_error(test *testing.T) {
+	text := "10100 [_] 09 Dec 20 21:05 +0000 one\n" +
+		"10101 [x] 09 Dec 20 22:05 +0000 two\n" +
+		"\n" +
+		"10102 [_] 09 Dec 20 23:05 +0000 three\n" +
+		"incorrect [x] 10 Dec 20 00:05 +0000 four\n" +
+		"\n" +
+		"10104 [_] 10 Dec 20 01:05 +0000 five\n"
+	notes, err := unmarshalNotes(text)
+
+	if notes != nil {
+		test.Fail()
+	}
+
+	wantedErrStr := "unable to unmarshal the note in line #5: " +
+		"unable to parse the note ID: " +
+		"strconv.Atoi: parsing \"incorrect\": invalid syntax"
+	if err == nil || err.Error() != wantedErrStr {
+		test.Fail()
+	}
+}
