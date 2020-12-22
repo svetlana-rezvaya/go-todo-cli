@@ -39,3 +39,9 @@ func filterByTime(notes []note, minimum time.Time, maximum time.Time) []note {
 
 	return notesCopy
 }
+
+func filterByDate(notes []note, date time.Time) []note {
+	minimum := date.Truncate(24 * time.Hour)
+	maximum := minimum.Add(24 * time.Hour)
+	return filterByTime(notes, minimum, maximum)
+}

@@ -140,3 +140,55 @@ func Test_filterByTime_nonEmpty(test *testing.T) {
 		test.Fail()
 	}
 }
+
+func Test_filterByDate_empty(test *testing.T) {
+	date := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
+	notes := filterByDate([]note{}, date)
+
+	wantedNotes := []note{}
+	if !reflect.DeepEqual(notes, wantedNotes) {
+		test.Fail()
+	}
+}
+
+func Test_filterByDate_nonEmpty(test *testing.T) {
+	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
+	date := createdAt.Add(2 * time.Hour)
+	notes := []note{
+		note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		note{
+			ID:        102,
+			CreatedAt: createdAt.Add(2 * time.Hour),
+			IsDone:    false,
+			Text:      "three",
+		},
+		note{
+			ID:        103,
+			CreatedAt: createdAt.Add(3 * time.Hour),
+			IsDone:    true,
+			Text:      "four",
+		},
+		note{
+			ID:        104,
+			CreatedAt: createdAt.Add(4 * time.Hour),
+			IsDone:    false,
+			Text:      "five",
+		},
+	}
+	notes = filterByDate(notes, date)
+
+	wantedNotes := []note{
+		note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		note{
+			ID:        102,
+			CreatedAt: createdAt.Add(2 * time.Hour),
+			IsDone:    false,
+			Text:      "three",
+		},
+	}
+	if !reflect.DeepEqual(notes, wantedNotes) {
+		test.Fail()
+	}
+}
