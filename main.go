@@ -61,6 +61,8 @@ func main() {
 
 			text := marshalNotes(filteredNotes)
 			fmt.Print(text)
+		} else if line == "exit" {
+			os.Exit(0)
 		}
 	}
 }
