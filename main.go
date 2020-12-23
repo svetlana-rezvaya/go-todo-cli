@@ -45,8 +45,21 @@ func main() {
 		}
 
 		line = strings.TrimSpace(line)
-		if line == "list" {
-			text := marshalNotes(notes)
+		if strings.HasPrefix(line, "list") {
+			filteredNotes := []note{}
+			parameter := strings.TrimSpace(strings.TrimPrefix(line, "list"))
+			if parameter == "done" {
+				filteredNotes = filterByStatus(notes, true)
+			} else if parameter == "to do" {
+				filteredNotes = filterByStatus(notes, false)
+			} else if parameter == "" {
+				filteredNotes = notes
+			} else {
+				log.Print("unknown parameter for 'list' command: ", parameter)
+				continue
+			}
+
+			text := marshalNotes(filteredNotes)
 			fmt.Print(text)
 		}
 	}
