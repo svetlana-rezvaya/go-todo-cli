@@ -65,6 +65,16 @@ func main() {
 
 			text := marshalNotes(filteredNotes)
 			fmt.Print(text)
+		} else if strings.HasPrefix(line, "find") {
+			query := strings.TrimSpace(strings.TrimPrefix(line, "find"))
+			if query == "" {
+				log.Print("query missing in 'find' command")
+				continue
+			}
+
+			filteredNotes := filterByText(notes, query)
+			text := marshalNotes(filteredNotes)
+			fmt.Print(text)
 		} else if line == "exit" {
 			os.Exit(0)
 		} else {
