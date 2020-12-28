@@ -75,6 +75,22 @@ func main() {
 			filteredNotes := filterByText(notes, query)
 			text := marshalNotes(filteredNotes)
 			fmt.Print(text)
+		} else if strings.HasPrefix(line, "date") {
+			parameter := strings.TrimSpace(strings.TrimPrefix(line, "date"))
+			if parameter == "" {
+				log.Print("parameter missing in 'date' command")
+				continue
+			}
+
+			date, err := time.Parse("02 Jan 06", parameter)
+			if err != nil {
+				log.Print("unable to parse the 'date' command parameter: ", err)
+				continue
+			}
+
+			filteredNotes := filterByDate(notes, date)
+			text := marshalNotes(filteredNotes)
+			fmt.Print(text)
 		} else if line == "exit" {
 			os.Exit(0)
 		} else {
