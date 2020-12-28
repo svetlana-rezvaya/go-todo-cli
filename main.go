@@ -45,6 +45,10 @@ func main() {
 		}
 
 		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
+		}
+
 		if strings.HasPrefix(line, "list") {
 			filteredNotes := []note{}
 			parameter := strings.TrimSpace(strings.TrimPrefix(line, "list"))
@@ -63,6 +67,8 @@ func main() {
 			fmt.Print(text)
 		} else if line == "exit" {
 			os.Exit(0)
+		} else {
+			log.Print("unknown command: ", line)
 		}
 	}
 }
