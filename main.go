@@ -128,6 +128,20 @@ func main() {
 			}
 
 			updateStatus(notes, id-10000, false)
+		} else if strings.HasPrefix(line, "delete") {
+			idStr := strings.TrimSpace(strings.TrimPrefix(line, "delete"))
+			if idStr == "" {
+				log.Print("note ID missing in 'delete' command")
+				continue
+			}
+
+			id, err := strconv.Atoi(idStr)
+			if err != nil {
+				log.Print("unable to parse the note ID: ", err)
+				continue
+			}
+
+			notes = deleteNote(notes, id-10000)
 		} else if line == "exit" {
 			os.Exit(0)
 		} else {
