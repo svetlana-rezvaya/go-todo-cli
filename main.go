@@ -114,6 +114,20 @@ func main() {
 			}
 
 			updateStatus(notes, id-10000, true)
+		} else if strings.HasPrefix(line, "uncheck") {
+			idStr := strings.TrimSpace(strings.TrimPrefix(line, "uncheck"))
+			if idStr == "" {
+				log.Print("note ID missing in 'uncheck' command")
+				continue
+			}
+
+			id, err := strconv.Atoi(idStr)
+			if err != nil {
+				log.Print("unable to parse the note ID: ", err)
+				continue
+			}
+
+			updateStatus(notes, id-10000, false)
 		} else if line == "exit" {
 			os.Exit(0)
 		} else {
