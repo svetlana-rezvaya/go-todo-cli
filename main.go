@@ -91,6 +91,14 @@ func main() {
 			filteredNotes := filterByDate(notes, date)
 			text := marshalNotes(filteredNotes)
 			fmt.Print(text)
+		} else if strings.HasPrefix(line, "add") {
+			text := strings.TrimSpace(strings.TrimPrefix(line, "add"))
+			if text == "" {
+				log.Print("text missing in 'add' command")
+				continue
+			}
+
+			notes = createNote(notes, text)
 		} else if line == "exit" {
 			os.Exit(0)
 		} else {
