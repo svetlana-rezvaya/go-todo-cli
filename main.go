@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -99,6 +100,20 @@ func main() {
 			}
 
 			notes = createNote(notes, text)
+		} else if strings.HasPrefix(line, "check") {
+			idStr := strings.TrimSpace(strings.TrimPrefix(line, "check"))
+			if idStr == "" {
+				log.Print("note ID missing in 'check' command")
+				continue
+			}
+
+			id, err := strconv.Atoi(idStr)
+			if err != nil {
+				log.Print("unable to parse the note ID: ", err)
+				continue
+			}
+
+			updateStatus(notes, id-10000, true)
 		} else if line == "exit" {
 			os.Exit(0)
 		} else {
