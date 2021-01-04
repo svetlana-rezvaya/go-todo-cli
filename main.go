@@ -100,6 +100,10 @@ func main() {
 			}
 
 			notes = createNote(notes, text)
+			err := saveNotes("storage.data", notes)
+			if err != nil {
+				log.Print("unable to save notes: ", err)
+			}
 		} else if strings.HasPrefix(line, "check") {
 			idStr := strings.TrimSpace(strings.TrimPrefix(line, "check"))
 			if idStr == "" {
@@ -114,6 +118,10 @@ func main() {
 			}
 
 			updateStatus(notes, id-10000, true)
+			err = saveNotes("storage.data", notes)
+			if err != nil {
+				log.Print("unable to save notes: ", err)
+			}
 		} else if strings.HasPrefix(line, "uncheck") {
 			idStr := strings.TrimSpace(strings.TrimPrefix(line, "uncheck"))
 			if idStr == "" {
@@ -128,6 +136,10 @@ func main() {
 			}
 
 			updateStatus(notes, id-10000, false)
+			err = saveNotes("storage.data", notes)
+			if err != nil {
+				log.Print("unable to save notes: ", err)
+			}
 		} else if strings.HasPrefix(line, "delete") {
 			idStr := strings.TrimSpace(strings.TrimPrefix(line, "delete"))
 			if idStr == "" {
@@ -142,6 +154,10 @@ func main() {
 			}
 
 			notes = deleteNote(notes, id-10000)
+			err = saveNotes("storage.data", notes)
+			if err != nil {
+				log.Print("unable to save notes: ", err)
+			}
 		} else if line == "exit" {
 			os.Exit(0)
 		} else {
