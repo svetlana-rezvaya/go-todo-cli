@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -11,7 +12,10 @@ import (
 )
 
 func main() {
-	notes, err := loadNotes("storage.data")
+	storageFilename := flag.String("storage", "storage.data", "storage file")
+	flag.Parse()
+
+	notes, err := loadNotes(*storageFilename)
 	if err != nil {
 		log.Fatal("unable to load notes: ", err)
 	}
@@ -81,7 +85,7 @@ func main() {
 			}
 
 			notes = createNote(notes, text)
-			err := saveNotes("storage.data", notes)
+			err := saveNotes(*storageFilename, notes)
 			if err != nil {
 				log.Print("unable to save notes: ", err)
 			}
@@ -99,7 +103,7 @@ func main() {
 			}
 
 			updateStatus(notes, id-10000, true)
-			err = saveNotes("storage.data", notes)
+			err = saveNotes(*storageFilename, notes)
 			if err != nil {
 				log.Print("unable to save notes: ", err)
 			}
@@ -117,7 +121,7 @@ func main() {
 			}
 
 			updateStatus(notes, id-10000, false)
-			err = saveNotes("storage.data", notes)
+			err = saveNotes(*storageFilename, notes)
 			if err != nil {
 				log.Print("unable to save notes: ", err)
 			}
@@ -135,7 +139,7 @@ func main() {
 			}
 
 			notes = deleteNote(notes, id-10000)
-			err = saveNotes("storage.data", notes)
+			err = saveNotes(*storageFilename, notes)
 			if err != nil {
 				log.Print("unable to save notes: ", err)
 			}
