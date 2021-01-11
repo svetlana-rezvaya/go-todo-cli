@@ -9,6 +9,9 @@ import (
 func loadNotes(storageFilename string) ([]note, error) {
 	file, err := os.Open(storageFilename)
 	if err != nil {
+		if os.IsNotExist(err) {
+			return []note{}, nil
+		}
 		return nil, errors.New("unable to open a storage file: " + err.Error())
 	}
 	defer file.Close()
