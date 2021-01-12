@@ -37,7 +37,7 @@ func main() {
 
 		if strings.HasPrefix(line, "list") {
 			filteredNotes := []note{}
-			parameter := strings.TrimSpace(strings.TrimPrefix(line, "list"))
+			parameter := getParameter(line, "list")
 			if parameter == "done" {
 				filteredNotes = filterByStatus(notes, true)
 			} else if parameter == "to do" {
@@ -52,7 +52,7 @@ func main() {
 			text := marshalNotes(filteredNotes)
 			fmt.Print(text)
 		} else if strings.HasPrefix(line, "find") {
-			query := strings.TrimSpace(strings.TrimPrefix(line, "find"))
+			query := getParameter(line, "find")
 			if query == "" {
 				log.Print("query missing in 'find' command")
 				continue
@@ -62,7 +62,7 @@ func main() {
 			text := marshalNotes(filteredNotes)
 			fmt.Print(text)
 		} else if strings.HasPrefix(line, "date") {
-			parameter := strings.TrimSpace(strings.TrimPrefix(line, "date"))
+			parameter := getParameter(line, "date")
 			if parameter == "" {
 				log.Print("parameter missing in 'date' command")
 				continue
@@ -78,7 +78,7 @@ func main() {
 			text := marshalNotes(filteredNotes)
 			fmt.Print(text)
 		} else if strings.HasPrefix(line, "add") {
-			text := strings.TrimSpace(strings.TrimPrefix(line, "add"))
+			text := getParameter(line, "add")
 			if text == "" {
 				log.Print("text missing in 'add' command")
 				continue
@@ -90,7 +90,7 @@ func main() {
 				log.Print("unable to save notes: ", err)
 			}
 		} else if strings.HasPrefix(line, "check") {
-			idStr := strings.TrimSpace(strings.TrimPrefix(line, "check"))
+			idStr := getParameter(line, "check")
 			if idStr == "" {
 				log.Print("note ID missing in 'check' command")
 				continue
@@ -108,7 +108,7 @@ func main() {
 				log.Print("unable to save notes: ", err)
 			}
 		} else if strings.HasPrefix(line, "uncheck") {
-			idStr := strings.TrimSpace(strings.TrimPrefix(line, "uncheck"))
+			idStr := getParameter(line, "uncheck")
 			if idStr == "" {
 				log.Print("note ID missing in 'uncheck' command")
 				continue
@@ -126,7 +126,7 @@ func main() {
 				log.Print("unable to save notes: ", err)
 			}
 		} else if strings.HasPrefix(line, "delete") {
-			idStr := strings.TrimSpace(strings.TrimPrefix(line, "delete"))
+			idStr := getParameter(line, "delete")
 			if idStr == "" {
 				log.Print("note ID missing in 'delete' command")
 				continue
