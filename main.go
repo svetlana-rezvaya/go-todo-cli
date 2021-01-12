@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -90,55 +89,37 @@ func main() {
 				log.Print("unable to save notes: ", err)
 			}
 		} else if strings.HasPrefix(line, "check") {
-			idStr := getParameter(line, "check")
-			if idStr == "" {
-				log.Print("note ID missing in 'check' command")
-				continue
-			}
-
-			id, err := strconv.Atoi(idStr)
+			id, err := getIDParameter(line, "check")
 			if err != nil {
-				log.Print("unable to parse the note ID: ", err)
+				log.Print("unable to get the note ID: ", err)
 				continue
 			}
 
-			updateStatus(notes, id-10000, true)
+			updateStatus(notes, id, true)
 			err = saveNotes(*storageFilename, notes)
 			if err != nil {
 				log.Print("unable to save notes: ", err)
 			}
 		} else if strings.HasPrefix(line, "uncheck") {
-			idStr := getParameter(line, "uncheck")
-			if idStr == "" {
-				log.Print("note ID missing in 'uncheck' command")
-				continue
-			}
-
-			id, err := strconv.Atoi(idStr)
+			id, err := getIDParameter(line, "uncheck")
 			if err != nil {
-				log.Print("unable to parse the note ID: ", err)
+				log.Print("unable to get the note ID: ", err)
 				continue
 			}
 
-			updateStatus(notes, id-10000, false)
+			updateStatus(notes, id, false)
 			err = saveNotes(*storageFilename, notes)
 			if err != nil {
 				log.Print("unable to save notes: ", err)
 			}
 		} else if strings.HasPrefix(line, "delete") {
-			idStr := getParameter(line, "delete")
-			if idStr == "" {
-				log.Print("note ID missing in 'delete' command")
-				continue
-			}
-
-			id, err := strconv.Atoi(idStr)
+			id, err := getIDParameter(line, "delete")
 			if err != nil {
-				log.Print("unable to parse the note ID: ", err)
+				log.Print("unable to get the note ID: ", err)
 				continue
 			}
 
-			notes = deleteNote(notes, id-10000)
+			notes = deleteNote(notes, id)
 			err = saveNotes(*storageFilename, notes)
 			if err != nil {
 				log.Print("unable to save notes: ", err)
