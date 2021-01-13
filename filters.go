@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"strings"
 	"time"
 )
@@ -44,4 +45,42 @@ func filterByDate(notes []note, date time.Time) []note {
 	minimum := date.Truncate(24 * time.Hour)
 	maximum := minimum.Add(24 * time.Hour)
 	return filterByTime(notes, minimum, maximum)
+}
+
+func filterByCommand(notes []note, line string) ([]note, error) {
+	filteredNotes := []note{}
+	if strings.HasPrefix(line, "list") {
+		parameter := getParameter(line, "list")
+		if parameter == "done" {
+			filteredNotes = filterByStatus(notes, true)
+		} else if parameter == "to do" {
+			filteredNotes = filterByStatus(notes, false)
+		} else if parameter == "" {
+			filteredNotes = notes
+		} else {
+			return nil, errors.New("unknown parameter for 'list' command: " + parameter)
+		}
+	} else if strings.HasPrefix(line, "find") {
+		query := getParameter(line, "find")
+		if query == "" {
+			return nil, errors.New("query missing in 'find' command")
+		}
+
+		filteredNotes = filterByText(notes, query)
+	} else if strings.HasPrefix(line, "date") {
+		parameter := getParameter(line, "date")
+		if parameter == "" {
+			return nil, errors.New("parameter missing in 'date' command")
+		}
+
+		date, err := time.Parse("02 Jan 06", parameter)
+		if err != nil {
+			return nil,
+				errors.New("unable to parse the 'date' command parameter: " + err.Error())
+		}
+
+		filteredNotes = filterByDate(notes, date)
+	}
+
+	return filteredNotes, nil
 }
