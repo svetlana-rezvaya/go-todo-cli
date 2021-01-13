@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"time"
 )
 
 func main() {
@@ -34,46 +33,13 @@ func main() {
 			continue
 		}
 
-		if strings.HasPrefix(line, "list") {
-			filteredNotes := []note{}
-			parameter := getParameter(line, "list")
-			if parameter == "done" {
-				filteredNotes = filterByStatus(notes, true)
-			} else if parameter == "to do" {
-				filteredNotes = filterByStatus(notes, false)
-			} else if parameter == "" {
-				filteredNotes = notes
-			} else {
-				log.Print("unknown parameter for 'list' command: ", parameter)
-				continue
-			}
-
-			text := marshalNotes(filteredNotes)
-			fmt.Print(text)
-		} else if strings.HasPrefix(line, "find") {
-			query := getParameter(line, "find")
-			if query == "" {
-				log.Print("query missing in 'find' command")
-				continue
-			}
-
-			filteredNotes := filterByText(notes, query)
-			text := marshalNotes(filteredNotes)
-			fmt.Print(text)
-		} else if strings.HasPrefix(line, "date") {
-			parameter := getParameter(line, "date")
-			if parameter == "" {
-				log.Print("parameter missing in 'date' command")
-				continue
-			}
-
-			date, err := time.Parse("02 Jan 06", parameter)
+		if strings.HasPrefix(line, "list") || strings.HasPrefix(line, "find") || strings.HasPrefix(line, "date") {
+			filteredNotes, err := filterByCommand(notes, line)
 			if err != nil {
-				log.Print("unable to parse the 'date' command parameter: ", err)
+				log.Print("unable to filter notes: ", err)
 				continue
 			}
 
-			filteredNotes := filterByDate(notes, date)
 			text := marshalNotes(filteredNotes)
 			fmt.Print(text)
 		} else if strings.HasPrefix(line, "add") {
