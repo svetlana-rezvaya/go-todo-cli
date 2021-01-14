@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -83,4 +84,21 @@ func filterByCommand(notes []note, line string) ([]note, error) {
 	}
 
 	return filteredNotes, nil
+}
+
+func filterByMultiCommand(notes []note, line string) ([]note, error) {
+	commands := strings.Split(line, "|")
+	for index, command := range commands {
+		filteredNotes, err := filterByCommand(notes, command)
+		if err != nil {
+			return nil, errors.New(
+				"unable to filter by command #" + strconv.Itoa(index+1) + ": " +
+					err.Error(),
+			)
+		}
+
+		notes = filteredNotes
+	}
+
+	return notes, nil
 }

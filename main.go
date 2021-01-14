@@ -34,7 +34,7 @@ func main() {
 		}
 
 		if strings.HasPrefix(line, "list") || strings.HasPrefix(line, "find") || strings.HasPrefix(line, "date") {
-			filteredNotes, err := filterByCommand(notes, line)
+			filteredNotes, err := filterByMultiCommand(notes, line)
 			if err != nil {
 				log.Print("unable to filter notes: ", err)
 				continue
