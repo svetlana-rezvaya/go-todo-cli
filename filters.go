@@ -91,6 +91,11 @@ func filterByCommand(notes []note, line string) ([]note, error) {
 func filterByMultiCommand(notes []note, line string) ([]note, error) {
 	commands := strings.Split(line, "|")
 	for index, command := range commands {
+		command = strings.TrimSpace(command)
+		if command == "" {
+			continue
+		}
+
 		filteredNotes, err := filterByCommand(notes, command)
 		if err != nil {
 			return nil, errors.New(
