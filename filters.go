@@ -81,6 +81,8 @@ func filterByCommand(notes []note, line string) ([]note, error) {
 		}
 
 		filteredNotes = filterByDate(notes, date)
+	} else {
+		return nil, errors.New("unknown command: " + line)
 	}
 
 	return filteredNotes, nil
