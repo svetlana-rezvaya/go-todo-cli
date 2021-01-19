@@ -468,3 +468,94 @@ func Test_filterByCommand_unknown(test *testing.T) {
 		test.Fail()
 	}
 }
+
+func Test_filterByMultiCommand_withOneCommand(test *testing.T) {
+	notes := []note{
+		note{ID: 100, IsDone: false, Text: "task No.1, one"},
+		note{ID: 101, IsDone: true, Text: "task No.1, two"},
+		note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	}
+	notes, err := filterByMultiCommand(notes, "find No.2")
+
+	wantedNotes := []note{
+		note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	}
+	if !reflect.DeepEqual(notes, wantedNotes) {
+		test.Fail()
+	}
+
+	if err != nil {
+		test.Fail()
+	}
+}
+
+func Test_filterByMultiCommand_withFewCommands(test *testing.T) {
+	notes := []note{
+		note{ID: 100, IsDone: false, Text: "task No.1, one"},
+		note{ID: 101, IsDone: true, Text: "task No.1, two"},
+		note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	}
+	notes, err := filterByMultiCommand(notes, "find No.2 | list to do")
+
+	wantedNotes := []note{
+		note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	}
+	if !reflect.DeepEqual(notes, wantedNotes) {
+		test.Fail()
+	}
+
+	if err != nil {
+		test.Fail()
+	}
+}
+
+func Test_filterByMultiCommand_withEmptyCommand(test *testing.T) {
+	notes := []note{
+		note{ID: 100, IsDone: false, Text: "task No.1, one"},
+		note{ID: 101, IsDone: true, Text: "task No.1, two"},
+		note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	}
+	notes, err := filterByMultiCommand(notes, "find No.2 | | list to do")
+
+	wantedNotes := []note{
+		note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	}
+	if !reflect.DeepEqual(notes, wantedNotes) {
+		test.Fail()
+	}
+
+	if err != nil {
+		test.Fail()
+	}
+}
+
+func Test_filterByMultiCommand_error(test *testing.T) {
+	notes := []note{
+		note{ID: 100, IsDone: false, Text: "task No.1, one"},
+		note{ID: 101, IsDone: true, Text: "task No.1, two"},
+		note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	}
+	notes, err := filterByMultiCommand(notes, "find No.2 | list unknown")
+
+	if notes != nil {
+		test.Fail()
+	}
+
+	wantedErrStr := "unable to filter by command #2: " +
+		"unknown parameter for 'list' command: unknown"
+	if err == nil || err.Error() != wantedErrStr {
+		test.Fail()
+	}
+}
