@@ -42,50 +42,14 @@ func main() {
 
 			text := marshalNotes(filteredNotes)
 			fmt.Print(text)
-		} else if strings.HasPrefix(line, "add") {
-			text := getParameter(line, "add")
-			if text == "" {
-				log.Print("text missing in 'add' command")
+		} else if strings.HasPrefix(line, "add") || strings.HasPrefix(line, "check") || strings.HasPrefix(line, "uncheck") || strings.HasPrefix(line, "delete") {
+			updatedNotes, err := updateUsingCommand(notes, line)
+			if err != nil {
+				log.Print("unable to update notes: ", err)
 				continue
 			}
 
-			notes = createNote(notes, text)
-			err := saveNotes(*storageFilename, notes)
-			if err != nil {
-				log.Print("unable to save notes: ", err)
-			}
-		} else if strings.HasPrefix(line, "check") {
-			id, err := getIDParameter(line, "check")
-			if err != nil {
-				log.Print("unable to get the note ID: ", err)
-				continue
-			}
-
-			updateStatus(notes, id, true)
-			err = saveNotes(*storageFilename, notes)
-			if err != nil {
-				log.Print("unable to save notes: ", err)
-			}
-		} else if strings.HasPrefix(line, "uncheck") {
-			id, err := getIDParameter(line, "uncheck")
-			if err != nil {
-				log.Print("unable to get the note ID: ", err)
-				continue
-			}
-
-			updateStatus(notes, id, false)
-			err = saveNotes(*storageFilename, notes)
-			if err != nil {
-				log.Print("unable to save notes: ", err)
-			}
-		} else if strings.HasPrefix(line, "delete") {
-			id, err := getIDParameter(line, "delete")
-			if err != nil {
-				log.Print("unable to get the note ID: ", err)
-				continue
-			}
-
-			notes = deleteNote(notes, id)
+			notes = updatedNotes
 			err = saveNotes(*storageFilename, notes)
 			if err != nil {
 				log.Print("unable to save notes: ", err)
