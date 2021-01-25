@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"strings"
-	"time"
 )
 
 func updateStatus(notes []note, id int, status bool) {
@@ -18,7 +17,6 @@ func updateStatus(notes []note, id int, status bool) {
 		return
 	}
 
-	notes[targetIndex].UpdatedAt = time.Now()
 	notes[targetIndex].IsDone = status
 }
 

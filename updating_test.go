@@ -48,14 +48,6 @@ func Test_updateStatus_nonEmptyAndExistingID(test *testing.T) {
 	}
 	updateStatus(notes, 102, true)
 
-	if len(notes) >= 3 {
-		if time.Since(notes[2].UpdatedAt) > time.Minute {
-			test.Fail()
-		}
-
-		notes[2].UpdatedAt = time.Time{}
-	}
-
 	wantedNotes := []note{
 		note{ID: 100, IsDone: false, Text: "one"},
 		note{ID: 101, IsDone: true, Text: "two"},
@@ -82,12 +74,8 @@ func Test_updateUsingCommand_add(test *testing.T) {
 		if time.Since(notes[len(notes)-1].CreatedAt) > time.Minute {
 			test.Fail()
 		}
-		if time.Since(notes[len(notes)-1].UpdatedAt) > time.Minute {
-			test.Fail()
-		}
 
 		notes[len(notes)-1].CreatedAt = time.Time{}
-		notes[len(notes)-1].UpdatedAt = time.Time{}
 	}
 
 	wantedNotes := []note{
@@ -137,14 +125,6 @@ func Test_updateUsingCommand_check(test *testing.T) {
 	}
 	notes, err := updateUsingCommand(notes, "check 10102")
 
-	if len(notes) >= 3 {
-		if time.Since(notes[2].UpdatedAt) > time.Minute {
-			test.Fail()
-		}
-
-		notes[2].UpdatedAt = time.Time{}
-	}
-
 	wantedNotes := []note{
 		note{ID: 100, IsDone: false, Text: "one"},
 		note{ID: 101, IsDone: true, Text: "two"},
@@ -190,14 +170,6 @@ func Test_updateUsingCommand_uncheck(test *testing.T) {
 		note{ID: 104, IsDone: false, Text: "five"},
 	}
 	notes, err := updateUsingCommand(notes, "uncheck 10101")
-
-	if len(notes) >= 2 {
-		if time.Since(notes[1].UpdatedAt) > time.Minute {
-			test.Fail()
-		}
-
-		notes[1].UpdatedAt = time.Time{}
-	}
 
 	wantedNotes := []note{
 		note{ID: 100, IsDone: false, Text: "one"},

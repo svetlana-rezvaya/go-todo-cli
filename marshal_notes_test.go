@@ -7,11 +7,9 @@ import (
 
 func Test_marshalNote_isNotDone(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
-	updatedAt := createdAt.Add(567 * time.Hour)
 	note := note{
 		ID:        123,
 		CreatedAt: createdAt,
-		UpdatedAt: updatedAt,
 		IsDone:    false,
 		Text:      "test",
 	}
@@ -24,11 +22,9 @@ func Test_marshalNote_isNotDone(test *testing.T) {
 
 func Test_marshalNote_isDone(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
-	updatedAt := createdAt.Add(567 * time.Hour)
 	note := note{
 		ID:        123,
 		CreatedAt: createdAt,
-		UpdatedAt: updatedAt,
 		IsDone:    true,
 		Text:      "test",
 	}

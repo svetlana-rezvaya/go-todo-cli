@@ -36,12 +36,8 @@ func Test_createNote_empty(test *testing.T) {
 		if time.Since(notes[len(notes)-1].CreatedAt) > time.Minute {
 			test.Fail()
 		}
-		if time.Since(notes[len(notes)-1].UpdatedAt) > time.Minute {
-			test.Fail()
-		}
 
 		notes[len(notes)-1].CreatedAt = time.Time{}
-		notes[len(notes)-1].UpdatedAt = time.Time{}
 	}
 
 	wantedNotes := []note{
@@ -66,12 +62,8 @@ func Test_createNote_nonEmpty(test *testing.T) {
 		if time.Since(notes[len(notes)-1].CreatedAt) > time.Minute {
 			test.Fail()
 		}
-		if time.Since(notes[len(notes)-1].UpdatedAt) > time.Minute {
-			test.Fail()
-		}
 
 		notes[len(notes)-1].CreatedAt = time.Time{}
-		notes[len(notes)-1].UpdatedAt = time.Time{}
 	}
 
 	wantedNotes := []note{

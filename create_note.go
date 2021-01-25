@@ -23,7 +23,6 @@ func createNote(notes []note, text string) []note {
 	note := note{
 		ID:        id,
 		CreatedAt: currentTime,
-		UpdatedAt: currentTime,
 		IsDone:    false,
 		Text:      text,
 	}
