@@ -17,7 +17,7 @@ func unmarshalNote(line string) (note, error) {
 	if err != nil {
 		return note{}, errors.New("unable to parse the note ID: " + err.Error())
 	}
-	id = id - 10000
+	id = id - idOffsetForAlignment
 
 	createdAtParts := []string{parts[2], parts[3], parts[4], parts[5], parts[6]}
 	createdAtStr := strings.Join(createdAtParts, " ")

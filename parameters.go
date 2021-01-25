@@ -21,5 +21,5 @@ func getIDParameter(line string, command string) (int, error) {
 		return 0, errors.New("unable to parse the note ID: " + err.Error())
 	}
 
-	return id - 10000, nil
+	return id - idOffsetForAlignment, nil
 }
