@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -33,7 +34,7 @@ func main() {
 			continue
 		}
 
-		if strings.HasPrefix(line, "list") || strings.HasPrefix(line, "find") || strings.HasPrefix(line, "date") {
+		if regexp.MustCompile("^(list|find|date)").MatchString(line) {
 			filteredNotes, err := filterByMultiCommand(notes, line)
 			if err != nil {
 				log.Print("unable to filter notes: ", err)
@@ -42,7 +43,7 @@ func main() {
 
 			text := marshalNotes(filteredNotes)
 			fmt.Print(text)
-		} else if strings.HasPrefix(line, "add") || strings.HasPrefix(line, "check") || strings.HasPrefix(line, "uncheck") || strings.HasPrefix(line, "delete") {
+		} else if regexp.MustCompile("^(add|(un)?check|delete)").MatchString(line) {
 			updatedNotes, err := updateUsingCommand(notes, line)
 			if err != nil {
 				log.Print("unable to update notes: ", err)
