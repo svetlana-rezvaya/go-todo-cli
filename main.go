@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+const helpMessage = "dummy\n"
+
 func main() {
 	storageFilename :=
 		flag.String("storage", "storage.data", "path to a storage file")
@@ -19,6 +21,8 @@ func main() {
 	if err != nil {
 		log.Fatal("unable to load notes: ", err)
 	}
+
+	fmt.Print(helpMessage)
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
@@ -56,6 +60,8 @@ func main() {
 			if err != nil {
 				log.Print("unable to save notes: ", err)
 			}
+		} else if line == "help" {
+			fmt.Print(helpMessage)
 		} else if line == "exit" {
 			os.Exit(0)
 		} else {
