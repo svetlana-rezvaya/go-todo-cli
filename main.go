@@ -11,7 +11,8 @@ import (
 )
 
 func main() {
-	storageFilename := flag.String("storage", "storage.data", "storage file")
+	storageFilename :=
+		flag.String("storage", "storage.data", "path to a storage file")
 	flag.Parse()
 
 	notes, err := loadNotes(*storageFilename)
