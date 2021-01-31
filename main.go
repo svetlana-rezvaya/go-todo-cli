@@ -10,7 +10,17 @@ import (
 	"strings"
 )
 
-const helpMessage = "dummy\n"
+const helpMessage = "" +
+	"filtering commands:\n" +
+	"  list [done|to do]  show all notes or notes filtered by specified status\n" +
+	"  find TEXT          filter notes by specified text and show them\n" +
+	"  date TIMESTAMP     filter notes by specified timestamp (in RFC #822 with numeric zone) and show them\n" +
+	"updating commands:\n" +
+	"  add TEXT           add a new unchecked note with specified text and current timestamp\n" +
+	"  check ID           check the note with specified ID\n" +
+	"  uncheck ID         uncheck the note with specified ID\n" +
+	"  delete ID          delete the note with specified ID\n" +
+	"(to combine filtering commands, use the vertical bar ('|'))\n"
 
 func main() {
 	storageFilename :=
