@@ -1,4 +1,4 @@
-package main
+package todo
 
 // DeleteNote ...
 func DeleteNote(notes []Note, id int) []Note {

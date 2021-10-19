@@ -8,6 +8,8 @@ import (
 	"os"
 	"regexp"
 	"strings"
+
+	todo "github.com/svetlana-rezvaya/go-todo-cli"
 )
 
 const helpMessage = "" +
@@ -27,7 +29,7 @@ func main() {
 		flag.String("storage", "storage.data", "path to a storage file")
 	flag.Parse()
 
-	notes, err := LoadNotes(*storageFilename)
+	notes, err := todo.LoadNotes(*storageFilename)
 	if err != nil {
 		log.Fatal("unable to load notes: ", err)
 	}
@@ -50,23 +52,23 @@ func main() {
 		}
 
 		if regexp.MustCompile("^(list|find|date)").MatchString(line) {
-			filteredNotes, err := FilterByMultiCommand(notes, line)
+			filteredNotes, err := todo.FilterByMultiCommand(notes, line)
 			if err != nil {
 				log.Print("unable to filter notes: ", err)
 				continue
 			}
 
-			text := MarshalNotes(filteredNotes)
+			text := todo.MarshalNotes(filteredNotes)
 			fmt.Print(text)
 		} else if regexp.MustCompile("^(add|(un)?check|delete)").MatchString(line) {
-			updatedNotes, err := UpdateUsingCommand(notes, line)
+			updatedNotes, err := todo.UpdateUsingCommand(notes, line)
 			if err != nil {
 				log.Print("unable to update notes: ", err)
 				continue
 			}
 
 			notes = updatedNotes
-			err = SaveNotes(*storageFilename, notes)
+			err = todo.SaveNotes(*storageFilename, notes)
 			if err != nil {
 				log.Print("unable to save notes: ", err)
 			}
