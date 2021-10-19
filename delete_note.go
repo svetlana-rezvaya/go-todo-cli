@@ -1,7 +1,8 @@
 package main
 
-func deleteNote(notes []note, id int) []note {
-	notesCopy := []note{}
+// DeleteNote ...
+func DeleteNote(notes []Note, id int) []Note {
+	notesCopy := []Note{}
 	for _, note := range notes {
 		if note.ID != id {
 			notesCopy = append(notesCopy, note)

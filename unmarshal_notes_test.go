@@ -12,7 +12,7 @@ func Test_unmarshalNote_successAndIsNotDone(test *testing.T) {
 	noteObject.CreatedAt = noteObject.CreatedAt.In(time.UTC)
 
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 0, 0, time.UTC)
-	wantedNoteObject := note{
+	wantedNoteObject := Note{
 		ID:        123,
 		CreatedAt: createdAt,
 		IsDone:    false,
@@ -33,7 +33,7 @@ func Test_unmarshalNote_successAndIsDone(test *testing.T) {
 	noteObject.CreatedAt = noteObject.CreatedAt.In(time.UTC)
 
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 0, 0, time.UTC)
-	wantedNoteObject := note{
+	wantedNoteObject := Note{
 		ID:        123,
 		CreatedAt: createdAt,
 		IsDone:    true,
@@ -51,7 +51,7 @@ func Test_unmarshalNote_successAndIsDone(test *testing.T) {
 func Test_unmarshalNote_errorWithPartCount(test *testing.T) {
 	noteObject, err := unmarshalNote("10123 [_] 09 Dec 20")
 
-	wantedNoteObject := note{}
+	wantedNoteObject := Note{}
 	if !reflect.DeepEqual(noteObject, wantedNoteObject) {
 		test.Fail()
 	}
@@ -65,7 +65,7 @@ func Test_unmarshalNote_errorWithIncorrectID(test *testing.T) {
 	noteObject, err :=
 		unmarshalNote("incorrect [_] 09 Dec 20 21:05 +0000 one two three")
 
-	wantedNoteObject := note{}
+	wantedNoteObject := Note{}
 	if !reflect.DeepEqual(noteObject, wantedNoteObject) {
 		test.Fail()
 	}
@@ -81,7 +81,7 @@ func Test_unmarshalNote_errorWithIncorrectTimestamp(test *testing.T) {
 	noteObject, err :=
 		unmarshalNote("10123 [_] 09 12 20 21:05 +0000 one two three")
 
-	wantedNoteObject := note{}
+	wantedNoteObject := Note{}
 	if !reflect.DeepEqual(noteObject, wantedNoteObject) {
 		test.Fail()
 	}
@@ -94,10 +94,10 @@ func Test_unmarshalNote_errorWithIncorrectTimestamp(test *testing.T) {
 	}
 }
 
-func Test_unmarshalNotes_empty(test *testing.T) {
-	notes, err := unmarshalNotes("")
+func TestUnmarshalNotes_empty(test *testing.T) {
+	notes, err := UnmarshalNotes("")
 
-	wantedNotes := []note{}
+	wantedNotes := []Note{}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
 	}
@@ -107,7 +107,7 @@ func Test_unmarshalNotes_empty(test *testing.T) {
 	}
 }
 
-func Test_unmarshalNotes_success(test *testing.T) {
+func TestUnmarshalNotes_success(test *testing.T) {
 	text := "10100 [_] 09 Dec 20 21:05 +0000 one\n" +
 		"10101 [x] 09 Dec 20 22:05 +0000 two\n" +
 		"\n" +
@@ -115,28 +115,28 @@ func Test_unmarshalNotes_success(test *testing.T) {
 		"10103 [x] 10 Dec 20 00:05 +0000 four\n" +
 		"\n" +
 		"10104 [_] 10 Dec 20 01:05 +0000 five\n"
-	notes, err := unmarshalNotes(text)
+	notes, err := UnmarshalNotes(text)
 	for index := range notes {
 		notes[index].CreatedAt = notes[index].CreatedAt.In(time.UTC)
 	}
 
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 0, 0, time.UTC)
-	wantedNotes := []note{
-		note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		note{
+	wantedNotes := []Note{
+		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
 			Text:      "three",
 		},
-		note{
+		Note{
 			ID:        103,
 			CreatedAt: createdAt.Add(3 * time.Hour),
 			IsDone:    true,
 			Text:      "four",
 		},
-		note{
+		Note{
 			ID:        104,
 			CreatedAt: createdAt.Add(4 * time.Hour),
 			IsDone:    false,
@@ -152,7 +152,7 @@ func Test_unmarshalNotes_success(test *testing.T) {
 	}
 }
 
-func Test_unmarshalNotes_error(test *testing.T) {
+func TestUnmarshalNotes_error(test *testing.T) {
 	text := "10100 [_] 09 Dec 20 21:05 +0000 one\n" +
 		"10101 [x] 09 Dec 20 22:05 +0000 two\n" +
 		"\n" +
@@ -160,7 +160,7 @@ func Test_unmarshalNotes_error(test *testing.T) {
 		"incorrect [x] 10 Dec 20 00:05 +0000 four\n" +
 		"\n" +
 		"10104 [_] 10 Dec 20 01:05 +0000 five\n"
-	notes, err := unmarshalNotes(text)
+	notes, err := UnmarshalNotes(text)
 
 	if notes != nil {
 		test.Fail()

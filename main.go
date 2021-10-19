@@ -27,7 +27,7 @@ func main() {
 		flag.String("storage", "storage.data", "path to a storage file")
 	flag.Parse()
 
-	notes, err := loadNotes(*storageFilename)
+	notes, err := LoadNotes(*storageFilename)
 	if err != nil {
 		log.Fatal("unable to load notes: ", err)
 	}
@@ -50,23 +50,23 @@ func main() {
 		}
 
 		if regexp.MustCompile("^(list|find|date)").MatchString(line) {
-			filteredNotes, err := filterByMultiCommand(notes, line)
+			filteredNotes, err := FilterByMultiCommand(notes, line)
 			if err != nil {
 				log.Print("unable to filter notes: ", err)
 				continue
 			}
 
-			text := marshalNotes(filteredNotes)
+			text := MarshalNotes(filteredNotes)
 			fmt.Print(text)
 		} else if regexp.MustCompile("^(add|(un)?check|delete)").MatchString(line) {
-			updatedNotes, err := updateUsingCommand(notes, line)
+			updatedNotes, err := UpdateUsingCommand(notes, line)
 			if err != nil {
 				log.Print("unable to update notes: ", err)
 				continue
 			}
 
 			notes = updatedNotes
-			err = saveNotes(*storageFilename, notes)
+			err = SaveNotes(*storageFilename, notes)
 			if err != nil {
 				log.Print("unable to save notes: ", err)
 			}

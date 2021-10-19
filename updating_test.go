@@ -6,69 +6,69 @@ import (
 	"time"
 )
 
-func Test_updateStatus_empty(test *testing.T) {
-	notes := []note{}
-	updateStatus(notes, 23, true)
+func TestUpdateStatus_empty(test *testing.T) {
+	notes := []Note{}
+	UpdateStatus(notes, 23, true)
 
-	wantedNotes := []note{}
+	wantedNotes := []Note{}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
 	}
 }
 
-func Test_updateStatus_nonEmptyAndNonExistingID(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestUpdateStatus_nonEmptyAndNonExistingID(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	updateStatus(notes, 23, true)
+	UpdateStatus(notes, 23, true)
 
-	wantedNotes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
-	}
-	if !reflect.DeepEqual(notes, wantedNotes) {
-		test.Fail()
-	}
-}
-
-func Test_updateStatus_nonEmptyAndExistingID(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
-	}
-	updateStatus(notes, 102, true)
-
-	wantedNotes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: true, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+	wantedNotes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
 	}
 }
 
-func Test_updateUsingCommand_add(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestUpdateStatus_nonEmptyAndExistingID(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes, err := updateUsingCommand(notes, "add test")
+	UpdateStatus(notes, 102, true)
+
+	wantedNotes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: true, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
+	}
+	if !reflect.DeepEqual(notes, wantedNotes) {
+		test.Fail()
+	}
+}
+
+func TestUpdateUsingCommand_add(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
+	}
+	notes, err := UpdateUsingCommand(notes, "add test")
 
 	if len(notes) != 0 {
 		if time.Since(notes[len(notes)-1].CreatedAt) > time.Minute {
@@ -78,13 +78,13 @@ func Test_updateUsingCommand_add(test *testing.T) {
 		notes[len(notes)-1].CreatedAt = time.Time{}
 	}
 
-	wantedNotes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
-		note{ID: 105, IsDone: false, Text: "test"},
+	wantedNotes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
+		Note{ID: 105, IsDone: false, Text: "test"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
@@ -95,15 +95,15 @@ func Test_updateUsingCommand_add(test *testing.T) {
 	}
 }
 
-func Test_updateUsingCommand_addWithoutText(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestUpdateUsingCommand_addWithoutText(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes, err := updateUsingCommand(notes, "add")
+	notes, err := UpdateUsingCommand(notes, "add")
 
 	if notes != nil {
 		test.Fail()
@@ -115,22 +115,22 @@ func Test_updateUsingCommand_addWithoutText(test *testing.T) {
 	}
 }
 
-func Test_updateUsingCommand_check(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestUpdateUsingCommand_check(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes, err := updateUsingCommand(notes, "check 10102")
+	notes, err := UpdateUsingCommand(notes, "check 10102")
 
-	wantedNotes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: true, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+	wantedNotes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: true, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
@@ -141,15 +141,15 @@ func Test_updateUsingCommand_check(test *testing.T) {
 	}
 }
 
-func Test_updateUsingCommand_checkWithoutID(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestUpdateUsingCommand_checkWithoutID(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes, err := updateUsingCommand(notes, "check")
+	notes, err := UpdateUsingCommand(notes, "check")
 
 	if notes != nil {
 		test.Fail()
@@ -161,22 +161,22 @@ func Test_updateUsingCommand_checkWithoutID(test *testing.T) {
 	}
 }
 
-func Test_updateUsingCommand_uncheck(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestUpdateUsingCommand_uncheck(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes, err := updateUsingCommand(notes, "uncheck 10101")
+	notes, err := UpdateUsingCommand(notes, "uncheck 10101")
 
-	wantedNotes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: false, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+	wantedNotes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: false, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
@@ -187,15 +187,15 @@ func Test_updateUsingCommand_uncheck(test *testing.T) {
 	}
 }
 
-func Test_updateUsingCommand_uncheckWithoutID(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestUpdateUsingCommand_uncheckWithoutID(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes, err := updateUsingCommand(notes, "uncheck")
+	notes, err := UpdateUsingCommand(notes, "uncheck")
 
 	if notes != nil {
 		test.Fail()
@@ -207,21 +207,21 @@ func Test_updateUsingCommand_uncheckWithoutID(test *testing.T) {
 	}
 }
 
-func Test_updateUsingCommand_delete(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestUpdateUsingCommand_delete(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes, err := updateUsingCommand(notes, "delete 10102")
+	notes, err := UpdateUsingCommand(notes, "delete 10102")
 
-	wantedNotes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+	wantedNotes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
@@ -232,15 +232,15 @@ func Test_updateUsingCommand_delete(test *testing.T) {
 	}
 }
 
-func Test_updateUsingCommand_deleteWithoutID(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestUpdateUsingCommand_deleteWithoutID(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes, err := updateUsingCommand(notes, "delete")
+	notes, err := UpdateUsingCommand(notes, "delete")
 
 	if notes != nil {
 		test.Fail()

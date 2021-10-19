@@ -7,8 +7,9 @@ import (
 	"time"
 )
 
-func filterByStatus(notes []note, status bool) []note {
-	notesCopy := []note{}
+// FilterByStatus ...
+func FilterByStatus(notes []Note, status bool) []Note {
+	notesCopy := []Note{}
 	for _, note := range notes {
 		if note.IsDone == status {
 			notesCopy = append(notesCopy, note)
@@ -18,8 +19,9 @@ func filterByStatus(notes []note, status bool) []note {
 	return notesCopy
 }
 
-func filterByText(notes []note, text string) []note {
-	notesCopy := []note{}
+// FilterByText ...
+func FilterByText(notes []Note, text string) []Note {
+	notesCopy := []Note{}
 	for _, note := range notes {
 		if strings.Contains(note.Text, text) {
 			notesCopy = append(notesCopy, note)
@@ -29,8 +31,9 @@ func filterByText(notes []note, text string) []note {
 	return notesCopy
 }
 
-func filterByTime(notes []note, minimum time.Time, maximum time.Time) []note {
-	notesCopy := []note{}
+// FilterByTime ...
+func FilterByTime(notes []Note, minimum time.Time, maximum time.Time) []Note {
+	notesCopy := []Note{}
 	for _, note := range notes {
 		tooEarly := note.CreatedAt.Before(minimum)
 		tooLate := note.CreatedAt.After(maximum)
@@ -42,20 +45,22 @@ func filterByTime(notes []note, minimum time.Time, maximum time.Time) []note {
 	return notesCopy
 }
 
-func filterByDate(notes []note, date time.Time) []note {
+// FilterByDate ...
+func FilterByDate(notes []Note, date time.Time) []Note {
 	minimum := date.Truncate(24 * time.Hour)
 	maximum := minimum.Add(24 * time.Hour)
-	return filterByTime(notes, minimum, maximum)
+	return FilterByTime(notes, minimum, maximum)
 }
 
-func filterByCommand(notes []note, line string) ([]note, error) {
-	filteredNotes := []note{}
+// FilterByCommand ...
+func FilterByCommand(notes []Note, line string) ([]Note, error) {
+	filteredNotes := []Note{}
 	if strings.HasPrefix(line, "list") {
 		parameter := getParameter(line, "list")
 		if parameter == "done" {
-			filteredNotes = filterByStatus(notes, true)
+			filteredNotes = FilterByStatus(notes, true)
 		} else if parameter == "to do" {
-			filteredNotes = filterByStatus(notes, false)
+			filteredNotes = FilterByStatus(notes, false)
 		} else if parameter == "" {
 			filteredNotes = notes
 		} else {
@@ -67,7 +72,7 @@ func filterByCommand(notes []note, line string) ([]note, error) {
 			return nil, errors.New("query missing in 'find' command")
 		}
 
-		filteredNotes = filterByText(notes, query)
+		filteredNotes = FilterByText(notes, query)
 	} else if strings.HasPrefix(line, "date") {
 		parameter := getParameter(line, "date")
 		if parameter == "" {
@@ -80,7 +85,7 @@ func filterByCommand(notes []note, line string) ([]note, error) {
 				errors.New("unable to parse the 'date' command parameter: " + err.Error())
 		}
 
-		filteredNotes = filterByDate(notes, date)
+		filteredNotes = FilterByDate(notes, date)
 	} else {
 		return nil, errors.New("unknown command: " + line)
 	}
@@ -88,7 +93,8 @@ func filterByCommand(notes []note, line string) ([]note, error) {
 	return filteredNotes, nil
 }
 
-func filterByMultiCommand(notes []note, line string) ([]note, error) {
+// FilterByMultiCommand ...
+func FilterByMultiCommand(notes []Note, line string) ([]Note, error) {
 	commands := strings.Split(line, "|")
 	for index, command := range commands {
 		command = strings.TrimSpace(command)
@@ -96,7 +102,7 @@ func filterByMultiCommand(notes []note, line string) ([]note, error) {
 			continue
 		}
 
-		filteredNotes, err := filterByCommand(notes, command)
+		filteredNotes, err := FilterByCommand(notes, command)
 		if err != nil {
 			return nil, errors.New(
 				"unable to filter by command #" + strconv.Itoa(index+1) + ": " +

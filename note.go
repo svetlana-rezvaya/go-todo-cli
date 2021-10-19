@@ -2,7 +2,7 @@ package main
 
 import "time"
 
-type note struct {
+type Note struct {
 	ID        int
 	CreatedAt time.Time
 	IsDone    bool

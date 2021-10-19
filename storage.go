@@ -6,11 +6,12 @@ import (
 	"os"
 )
 
-func loadNotes(storageFilename string) ([]note, error) {
+// LoadNotes ...
+func LoadNotes(storageFilename string) ([]Note, error) {
 	file, err := os.Open(storageFilename)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return []note{}, nil
+			return []Note{}, nil
 		}
 		return nil, errors.New("unable to open a storage file: " + err.Error())
 	}
@@ -21,7 +22,7 @@ func loadNotes(storageFilename string) ([]note, error) {
 		return nil, errors.New("unable to read a storage file: " + err.Error())
 	}
 
-	notes, err := unmarshalNotes(string(textBytes))
+	notes, err := UnmarshalNotes(string(textBytes))
 	if err != nil {
 		return nil, errors.New("unable to unmarshal a storage file: " + err.Error())
 	}
@@ -29,14 +30,15 @@ func loadNotes(storageFilename string) ([]note, error) {
 	return notes, nil
 }
 
-func saveNotes(storageFilename string, notes []note) error {
+// SaveNotes ...
+func SaveNotes(storageFilename string, notes []Note) error {
 	file, err := os.Create(storageFilename)
 	if err != nil {
 		return errors.New("unable to create a storage file: " + err.Error())
 	}
 	defer file.Close()
 
-	text := marshalNotes(notes)
+	text := MarshalNotes(notes)
 	_, err = file.WriteString(text)
 	if err != nil {
 		return errors.New("unable to fill a storage file: " + err.Error())

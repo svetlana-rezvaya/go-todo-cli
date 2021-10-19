@@ -6,130 +6,130 @@ import (
 	"time"
 )
 
-func Test_filterByStatus_empty(test *testing.T) {
-	notes := filterByStatus([]note{}, true)
+func TestFilterByStatus_empty(test *testing.T) {
+	notes := FilterByStatus([]Note{}, true)
 
-	wantedNotes := []note{}
+	wantedNotes := []Note{}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
 	}
 }
 
-func Test_filterByStatus_isDone(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestFilterByStatus_isDone(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes = filterByStatus(notes, true)
+	notes = FilterByStatus(notes, true)
 
-	wantedNotes := []note{
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 103, IsDone: true, Text: "four"},
-	}
-	if !reflect.DeepEqual(notes, wantedNotes) {
-		test.Fail()
-	}
-}
-
-func Test_filterByStatus_isNotDone(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
-	}
-	notes = filterByStatus(notes, false)
-
-	wantedNotes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 104, IsDone: false, Text: "five"},
+	wantedNotes := []Note{
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 103, IsDone: true, Text: "four"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
 	}
 }
 
-func Test_filterByText_empty(test *testing.T) {
-	notes := filterByText([]note{}, "No.2")
-
-	wantedNotes := []note{}
-	if !reflect.DeepEqual(notes, wantedNotes) {
-		test.Fail()
+func TestFilterByStatus_isNotDone(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-}
+	notes = FilterByStatus(notes, false)
 
-func Test_filterByText_nonEmpty(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "task No.1, one"},
-		note{ID: 101, IsDone: true, Text: "task No.1, two"},
-		note{ID: 102, IsDone: false, Text: "task No.2, three"},
-		note{ID: 103, IsDone: true, Text: "task No.2, four"},
-		note{ID: 104, IsDone: false, Text: "task No.2, five"},
-	}
-	notes = filterByText(notes, "No.2")
-
-	wantedNotes := []note{
-		note{ID: 102, IsDone: false, Text: "task No.2, three"},
-		note{ID: 103, IsDone: true, Text: "task No.2, four"},
-		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	wantedNotes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
 	}
 }
 
-func Test_filterByTime_empty(test *testing.T) {
+func TestFilterByText_empty(test *testing.T) {
+	notes := FilterByText([]Note{}, "No.2")
+
+	wantedNotes := []Note{}
+	if !reflect.DeepEqual(notes, wantedNotes) {
+		test.Fail()
+	}
+}
+
+func TestFilterByText_nonEmpty(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "task No.1, one"},
+		Note{ID: 101, IsDone: true, Text: "task No.1, two"},
+		Note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		Note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		Note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	}
+	notes = FilterByText(notes, "No.2")
+
+	wantedNotes := []Note{
+		Note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		Note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		Note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	}
+	if !reflect.DeepEqual(notes, wantedNotes) {
+		test.Fail()
+	}
+}
+
+func TestFilterByTime_empty(test *testing.T) {
 	minimum := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
 	maximum := minimum.Add(567 * time.Hour)
-	notes := filterByTime([]note{}, minimum, maximum)
+	notes := FilterByTime([]Note{}, minimum, maximum)
 
-	wantedNotes := []note{}
+	wantedNotes := []Note{}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
 	}
 }
 
-func Test_filterByTime_nonEmpty(test *testing.T) {
+func TestFilterByTime_nonEmpty(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
 	minimum := createdAt.Add(2 * time.Hour)
 	maximum := createdAt.Add(3 * time.Hour)
-	notes := []note{
-		note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		note{
+	notes := []Note{
+		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
 			Text:      "three",
 		},
-		note{
+		Note{
 			ID:        103,
 			CreatedAt: createdAt.Add(3 * time.Hour),
 			IsDone:    true,
 			Text:      "four",
 		},
-		note{
+		Note{
 			ID:        104,
 			CreatedAt: createdAt.Add(4 * time.Hour),
 			IsDone:    false,
 			Text:      "five",
 		},
 	}
-	notes = filterByTime(notes, minimum, maximum)
+	notes = FilterByTime(notes, minimum, maximum)
 
-	wantedNotes := []note{
-		note{
+	wantedNotes := []Note{
+		Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
 			Text:      "three",
 		},
-		note{
+		Note{
 			ID:        103,
 			CreatedAt: createdAt.Add(3 * time.Hour),
 			IsDone:    true,
@@ -141,47 +141,47 @@ func Test_filterByTime_nonEmpty(test *testing.T) {
 	}
 }
 
-func Test_filterByDate_empty(test *testing.T) {
+func TestFilterByDate_empty(test *testing.T) {
 	date := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
-	notes := filterByDate([]note{}, date)
+	notes := FilterByDate([]Note{}, date)
 
-	wantedNotes := []note{}
+	wantedNotes := []Note{}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
 	}
 }
 
-func Test_filterByDate_nonEmpty(test *testing.T) {
+func TestFilterByDate_nonEmpty(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
 	date := createdAt.Add(2 * time.Hour)
-	notes := []note{
-		note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		note{
+	notes := []Note{
+		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
 			Text:      "three",
 		},
-		note{
+		Note{
 			ID:        103,
 			CreatedAt: createdAt.Add(3 * time.Hour),
 			IsDone:    true,
 			Text:      "four",
 		},
-		note{
+		Note{
 			ID:        104,
 			CreatedAt: createdAt.Add(4 * time.Hour),
 			IsDone:    false,
 			Text:      "five",
 		},
 	}
-	notes = filterByDate(notes, date)
+	notes = FilterByDate(notes, date)
 
-	wantedNotes := []note{
-		note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		note{
+	wantedNotes := []Note{
+		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
@@ -193,22 +193,22 @@ func Test_filterByDate_nonEmpty(test *testing.T) {
 	}
 }
 
-func Test_filterByCommand_list(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestFilterByCommand_list(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes, err := filterByCommand(notes, "list")
+	notes, err := FilterByCommand(notes, "list")
 
-	wantedNotes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+	wantedNotes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
@@ -219,19 +219,19 @@ func Test_filterByCommand_list(test *testing.T) {
 	}
 }
 
-func Test_filterByCommand_listDone(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestFilterByCommand_listDone(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes, err := filterByCommand(notes, "list done")
+	notes, err := FilterByCommand(notes, "list done")
 
-	wantedNotes := []note{
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 103, IsDone: true, Text: "four"},
+	wantedNotes := []Note{
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 103, IsDone: true, Text: "four"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
@@ -242,20 +242,20 @@ func Test_filterByCommand_listDone(test *testing.T) {
 	}
 }
 
-func Test_filterByCommand_listToDo(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestFilterByCommand_listToDo(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes, err := filterByCommand(notes, "list to do")
+	notes, err := FilterByCommand(notes, "list to do")
 
-	wantedNotes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 104, IsDone: false, Text: "five"},
+	wantedNotes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
@@ -266,15 +266,15 @@ func Test_filterByCommand_listToDo(test *testing.T) {
 	}
 }
 
-func Test_filterByCommand_listUnknown(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestFilterByCommand_listUnknown(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes, err := filterByCommand(notes, "list unknown")
+	notes, err := FilterByCommand(notes, "list unknown")
 
 	if notes != nil {
 		test.Fail()
@@ -286,20 +286,20 @@ func Test_filterByCommand_listUnknown(test *testing.T) {
 	}
 }
 
-func Test_filterByCommand_find(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "task No.1, one"},
-		note{ID: 101, IsDone: true, Text: "task No.1, two"},
-		note{ID: 102, IsDone: false, Text: "task No.2, three"},
-		note{ID: 103, IsDone: true, Text: "task No.2, four"},
-		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+func TestFilterByCommand_find(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "task No.1, one"},
+		Note{ID: 101, IsDone: true, Text: "task No.1, two"},
+		Note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		Note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		Note{ID: 104, IsDone: false, Text: "task No.2, five"},
 	}
-	notes, err := filterByCommand(notes, "find No.2")
+	notes, err := FilterByCommand(notes, "find No.2")
 
-	wantedNotes := []note{
-		note{ID: 102, IsDone: false, Text: "task No.2, three"},
-		note{ID: 103, IsDone: true, Text: "task No.2, four"},
-		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	wantedNotes := []Note{
+		Note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		Note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		Note{ID: 104, IsDone: false, Text: "task No.2, five"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
@@ -310,15 +310,15 @@ func Test_filterByCommand_find(test *testing.T) {
 	}
 }
 
-func Test_filterByCommand_findWithoutParameter(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "task No.1, one"},
-		note{ID: 101, IsDone: true, Text: "task No.1, two"},
-		note{ID: 102, IsDone: false, Text: "task No.2, three"},
-		note{ID: 103, IsDone: true, Text: "task No.2, four"},
-		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+func TestFilterByCommand_findWithoutParameter(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "task No.1, one"},
+		Note{ID: 101, IsDone: true, Text: "task No.1, two"},
+		Note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		Note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		Note{ID: 104, IsDone: false, Text: "task No.2, five"},
 	}
-	notes, err := filterByCommand(notes, "find")
+	notes, err := FilterByCommand(notes, "find")
 
 	if notes != nil {
 		test.Fail()
@@ -330,36 +330,36 @@ func Test_filterByCommand_findWithoutParameter(test *testing.T) {
 	}
 }
 
-func Test_filterByCommand_date(test *testing.T) {
+func TestFilterByCommand_date(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
-	notes := []note{
-		note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		note{
+	notes := []Note{
+		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
 			Text:      "three",
 		},
-		note{
+		Note{
 			ID:        103,
 			CreatedAt: createdAt.Add(3 * time.Hour),
 			IsDone:    true,
 			Text:      "four",
 		},
-		note{
+		Note{
 			ID:        104,
 			CreatedAt: createdAt.Add(4 * time.Hour),
 			IsDone:    false,
 			Text:      "five",
 		},
 	}
-	notes, err := filterByCommand(notes, "date 09 Dec 20")
+	notes, err := FilterByCommand(notes, "date 09 Dec 20")
 
-	wantedNotes := []note{
-		note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		note{
+	wantedNotes := []Note{
+		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
@@ -375,31 +375,31 @@ func Test_filterByCommand_date(test *testing.T) {
 	}
 }
 
-func Test_filterByCommand_dateWithoutParameter(test *testing.T) {
+func TestFilterByCommand_dateWithoutParameter(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
-	notes := []note{
-		note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		note{
+	notes := []Note{
+		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
 			Text:      "three",
 		},
-		note{
+		Note{
 			ID:        103,
 			CreatedAt: createdAt.Add(3 * time.Hour),
 			IsDone:    true,
 			Text:      "four",
 		},
-		note{
+		Note{
 			ID:        104,
 			CreatedAt: createdAt.Add(4 * time.Hour),
 			IsDone:    false,
 			Text:      "five",
 		},
 	}
-	notes, err := filterByCommand(notes, "date")
+	notes, err := FilterByCommand(notes, "date")
 
 	if notes != nil {
 		test.Fail()
@@ -411,31 +411,31 @@ func Test_filterByCommand_dateWithoutParameter(test *testing.T) {
 	}
 }
 
-func Test_filterByCommand_dateWithIncorrectParameter(test *testing.T) {
+func TestFilterByCommand_dateWithIncorrectParameter(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
-	notes := []note{
-		note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		note{
+	notes := []Note{
+		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
 			Text:      "three",
 		},
-		note{
+		Note{
 			ID:        103,
 			CreatedAt: createdAt.Add(3 * time.Hour),
 			IsDone:    true,
 			Text:      "four",
 		},
-		note{
+		Note{
 			ID:        104,
 			CreatedAt: createdAt.Add(4 * time.Hour),
 			IsDone:    false,
 			Text:      "five",
 		},
 	}
-	notes, err := filterByCommand(notes, "date 09 12 20")
+	notes, err := FilterByCommand(notes, "date 09 12 20")
 
 	if notes != nil {
 		test.Fail()
@@ -449,15 +449,15 @@ func Test_filterByCommand_dateWithIncorrectParameter(test *testing.T) {
 	}
 }
 
-func Test_filterByCommand_unknown(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "one"},
-		note{ID: 101, IsDone: true, Text: "two"},
-		note{ID: 102, IsDone: false, Text: "three"},
-		note{ID: 103, IsDone: true, Text: "four"},
-		note{ID: 104, IsDone: false, Text: "five"},
+func TestFilterByCommand_unknown(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "one"},
+		Note{ID: 101, IsDone: true, Text: "two"},
+		Note{ID: 102, IsDone: false, Text: "three"},
+		Note{ID: 103, IsDone: true, Text: "four"},
+		Note{ID: 104, IsDone: false, Text: "five"},
 	}
-	notes, err := filterByCommand(notes, "unknown")
+	notes, err := FilterByCommand(notes, "unknown")
 
 	if notes != nil {
 		test.Fail()
@@ -469,20 +469,20 @@ func Test_filterByCommand_unknown(test *testing.T) {
 	}
 }
 
-func Test_filterByMultiCommand_withOneCommand(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "task No.1, one"},
-		note{ID: 101, IsDone: true, Text: "task No.1, two"},
-		note{ID: 102, IsDone: false, Text: "task No.2, three"},
-		note{ID: 103, IsDone: true, Text: "task No.2, four"},
-		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+func TestFilterByMultiCommand_withOneCommand(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "task No.1, one"},
+		Note{ID: 101, IsDone: true, Text: "task No.1, two"},
+		Note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		Note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		Note{ID: 104, IsDone: false, Text: "task No.2, five"},
 	}
-	notes, err := filterByMultiCommand(notes, "find No.2")
+	notes, err := FilterByMultiCommand(notes, "find No.2")
 
-	wantedNotes := []note{
-		note{ID: 102, IsDone: false, Text: "task No.2, three"},
-		note{ID: 103, IsDone: true, Text: "task No.2, four"},
-		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	wantedNotes := []Note{
+		Note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		Note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		Note{ID: 104, IsDone: false, Text: "task No.2, five"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
@@ -493,19 +493,19 @@ func Test_filterByMultiCommand_withOneCommand(test *testing.T) {
 	}
 }
 
-func Test_filterByMultiCommand_withFewCommands(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "task No.1, one"},
-		note{ID: 101, IsDone: true, Text: "task No.1, two"},
-		note{ID: 102, IsDone: false, Text: "task No.2, three"},
-		note{ID: 103, IsDone: true, Text: "task No.2, four"},
-		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+func TestFilterByMultiCommand_withFewCommands(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "task No.1, one"},
+		Note{ID: 101, IsDone: true, Text: "task No.1, two"},
+		Note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		Note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		Note{ID: 104, IsDone: false, Text: "task No.2, five"},
 	}
-	notes, err := filterByMultiCommand(notes, "find No.2 | list to do")
+	notes, err := FilterByMultiCommand(notes, "find No.2 | list to do")
 
-	wantedNotes := []note{
-		note{ID: 102, IsDone: false, Text: "task No.2, three"},
-		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	wantedNotes := []Note{
+		Note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		Note{ID: 104, IsDone: false, Text: "task No.2, five"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
@@ -516,19 +516,19 @@ func Test_filterByMultiCommand_withFewCommands(test *testing.T) {
 	}
 }
 
-func Test_filterByMultiCommand_withEmptyCommand(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "task No.1, one"},
-		note{ID: 101, IsDone: true, Text: "task No.1, two"},
-		note{ID: 102, IsDone: false, Text: "task No.2, three"},
-		note{ID: 103, IsDone: true, Text: "task No.2, four"},
-		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+func TestFilterByMultiCommand_withEmptyCommand(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "task No.1, one"},
+		Note{ID: 101, IsDone: true, Text: "task No.1, two"},
+		Note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		Note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		Note{ID: 104, IsDone: false, Text: "task No.2, five"},
 	}
-	notes, err := filterByMultiCommand(notes, "find No.2 | | list to do")
+	notes, err := FilterByMultiCommand(notes, "find No.2 | | list to do")
 
-	wantedNotes := []note{
-		note{ID: 102, IsDone: false, Text: "task No.2, three"},
-		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+	wantedNotes := []Note{
+		Note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		Note{ID: 104, IsDone: false, Text: "task No.2, five"},
 	}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
@@ -539,15 +539,15 @@ func Test_filterByMultiCommand_withEmptyCommand(test *testing.T) {
 	}
 }
 
-func Test_filterByMultiCommand_error(test *testing.T) {
-	notes := []note{
-		note{ID: 100, IsDone: false, Text: "task No.1, one"},
-		note{ID: 101, IsDone: true, Text: "task No.1, two"},
-		note{ID: 102, IsDone: false, Text: "task No.2, three"},
-		note{ID: 103, IsDone: true, Text: "task No.2, four"},
-		note{ID: 104, IsDone: false, Text: "task No.2, five"},
+func TestFilterByMultiCommand_error(test *testing.T) {
+	notes := []Note{
+		Note{ID: 100, IsDone: false, Text: "task No.1, one"},
+		Note{ID: 101, IsDone: true, Text: "task No.1, two"},
+		Note{ID: 102, IsDone: false, Text: "task No.2, three"},
+		Note{ID: 103, IsDone: true, Text: "task No.2, four"},
+		Note{ID: 104, IsDone: false, Text: "task No.2, five"},
 	}
-	notes, err := filterByMultiCommand(notes, "find No.2 | list unknown")
+	notes, err := FilterByMultiCommand(notes, "find No.2 | list unknown")
 
 	if notes != nil {
 		test.Fail()

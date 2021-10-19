@@ -7,16 +7,16 @@ import (
 	"time"
 )
 
-func Test_loadNotes_empty(test *testing.T) {
+func TestLoadNotes_empty(test *testing.T) {
 	file, err := ioutil.TempFile("", "test*.data")
 	if err != nil {
 		test.FailNow()
 	}
 	file.Close()
 
-	notes, err := loadNotes(file.Name())
+	notes, err := LoadNotes(file.Name())
 
-	wantedNotes := []note{}
+	wantedNotes := []Note{}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
 	}
@@ -26,7 +26,7 @@ func Test_loadNotes_empty(test *testing.T) {
 	}
 }
 
-func Test_loadNotes_nonEmpty(test *testing.T) {
+func TestLoadNotes_nonEmpty(test *testing.T) {
 	file, err := ioutil.TempFile("", "test*.data")
 	if err != nil {
 		test.FailNow()
@@ -43,28 +43,28 @@ func Test_loadNotes_nonEmpty(test *testing.T) {
 		test.FailNow()
 	}
 
-	notes, err := loadNotes(file.Name())
+	notes, err := LoadNotes(file.Name())
 	for index := range notes {
 		notes[index].CreatedAt = notes[index].CreatedAt.In(time.UTC)
 	}
 
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 0, 0, time.UTC)
-	wantedNotes := []note{
-		note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		note{
+	wantedNotes := []Note{
+		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
 			Text:      "three",
 		},
-		note{
+		Note{
 			ID:        103,
 			CreatedAt: createdAt.Add(3 * time.Hour),
 			IsDone:    true,
 			Text:      "four",
 		},
-		note{
+		Note{
 			ID:        104,
 			CreatedAt: createdAt.Add(4 * time.Hour),
 			IsDone:    false,
@@ -80,7 +80,7 @@ func Test_loadNotes_nonEmpty(test *testing.T) {
 	}
 }
 
-func Test_loadNotes_error(test *testing.T) {
+func TestLoadNotes_error(test *testing.T) {
 	file, err := ioutil.TempFile("", "test*.data")
 	if err != nil {
 		test.FailNow()
@@ -97,7 +97,7 @@ func Test_loadNotes_error(test *testing.T) {
 		test.FailNow()
 	}
 
-	notes, err := loadNotes(file.Name())
+	notes, err := LoadNotes(file.Name())
 
 	if notes != nil {
 		test.Fail()
@@ -112,14 +112,14 @@ func Test_loadNotes_error(test *testing.T) {
 	}
 }
 
-func Test_saveNotes_empty(test *testing.T) {
+func TestSaveNotes_empty(test *testing.T) {
 	file, err := ioutil.TempFile("", "test*.data")
 	if err != nil {
 		test.FailNow()
 	}
 	file.Close()
 
-	err = saveNotes(file.Name(), []note{})
+	err = SaveNotes(file.Name(), []Note{})
 	if err != nil {
 		test.FailNow()
 	}
@@ -134,7 +134,7 @@ func Test_saveNotes_empty(test *testing.T) {
 	}
 }
 
-func Test_saveNotes_nonEmpty(test *testing.T) {
+func TestSaveNotes_nonEmpty(test *testing.T) {
 	file, err := ioutil.TempFile("", "test*.data")
 	if err != nil {
 		test.FailNow()
@@ -142,29 +142,29 @@ func Test_saveNotes_nonEmpty(test *testing.T) {
 	file.Close()
 
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
-	notes := []note{
-		note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		note{
+	notes := []Note{
+		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
 			Text:      "three",
 		},
-		note{
+		Note{
 			ID:        103,
 			CreatedAt: createdAt.Add(3 * time.Hour),
 			IsDone:    true,
 			Text:      "four",
 		},
-		note{
+		Note{
 			ID:        104,
 			CreatedAt: createdAt.Add(4 * time.Hour),
 			IsDone:    false,
 			Text:      "five",
 		},
 	}
-	err = saveNotes(file.Name(), notes)
+	err = SaveNotes(file.Name(), notes)
 	if err != nil {
 		test.FailNow()
 	}

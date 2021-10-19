@@ -5,7 +5,8 @@ import (
 	"strings"
 )
 
-func updateStatus(notes []note, id int, status bool) {
+// UpdateStatus ...
+func UpdateStatus(notes []Note, id int, status bool) {
 	targetIndex := -1
 	for index, note := range notes {
 		if note.ID == id {
@@ -20,35 +21,36 @@ func updateStatus(notes []note, id int, status bool) {
 	notes[targetIndex].IsDone = status
 }
 
-func updateUsingCommand(notes []note, line string) ([]note, error) {
+// UpdateUsingCommand ...
+func UpdateUsingCommand(notes []Note, line string) ([]Note, error) {
 	if strings.HasPrefix(line, "add") {
 		text := getParameter(line, "add")
 		if text == "" {
 			return nil, errors.New("text missing in 'add' command")
 		}
 
-		notes = createNote(notes, text)
+		notes = CreateNote(notes, text)
 	} else if strings.HasPrefix(line, "check") {
 		id, err := getIDParameter(line, "check")
 		if err != nil {
 			return nil, errors.New("unable to get the note ID: " + err.Error())
 		}
 
-		updateStatus(notes, id, true)
+		UpdateStatus(notes, id, true)
 	} else if strings.HasPrefix(line, "uncheck") {
 		id, err := getIDParameter(line, "uncheck")
 		if err != nil {
 			return nil, errors.New("unable to get the note ID: " + err.Error())
 		}
 
-		updateStatus(notes, id, false)
+		UpdateStatus(notes, id, false)
 	} else if strings.HasPrefix(line, "delete") {
 		id, err := getIDParameter(line, "delete")
 		if err != nil {
 			return nil, errors.New("unable to get the note ID: " + err.Error())
 		}
 
-		notes = deleteNote(notes, id)
+		notes = DeleteNote(notes, id)
 	}
 
 	return notes, nil

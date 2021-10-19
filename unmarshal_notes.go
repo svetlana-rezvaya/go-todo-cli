@@ -7,15 +7,15 @@ import (
 	"time"
 )
 
-func unmarshalNote(line string) (note, error) {
+func unmarshalNote(line string) (Note, error) {
 	parts := strings.SplitN(line, " ", 8)
 	if len(parts) < 7 {
-		return note{}, errors.New("not enough parts in the line")
+		return Note{}, errors.New("not enough parts in the line")
 	}
 
 	id, err := strconv.Atoi(parts[0])
 	if err != nil {
-		return note{}, errors.New("unable to parse the note ID: " + err.Error())
+		return Note{}, errors.New("unable to parse the note ID: " + err.Error())
 	}
 	id = id - idOffsetForAlignment
 
@@ -23,18 +23,19 @@ func unmarshalNote(line string) (note, error) {
 	createdAtStr := strings.Join(createdAtParts, " ")
 	createdAt, err := time.Parse(time.RFC822Z, createdAtStr)
 	if err != nil {
-		return note{},
+		return Note{},
 			errors.New("unable to parse the note creation timestamp: " + err.Error())
 	}
 
 	isDone := parts[1] == "[x]"
 
-	note := note{ID: id, CreatedAt: createdAt, IsDone: isDone, Text: parts[7]}
+	note := Note{ID: id, CreatedAt: createdAt, IsDone: isDone, Text: parts[7]}
 	return note, nil
 }
 
-func unmarshalNotes(text string) ([]note, error) {
-	notes := []note{}
+// UnmarshalNotes ...
+func UnmarshalNotes(text string) ([]Note, error) {
+	notes := []Note{}
 	lines := strings.Split(text, "\n")
 	for lineIndex, line := range lines {
 		if line == "" {
