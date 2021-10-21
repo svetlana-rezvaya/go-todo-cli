@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	todo "github.com/svetlana-rezvaya/go-todo-cli"
+	"github.com/svetlana-rezvaya/go-todo-cli/cli"
 )
 
 const helpMessage = "" +
@@ -52,7 +53,7 @@ func main() {
 		}
 
 		if regexp.MustCompile("^(list|find|date)").MatchString(line) {
-			filteredNotes, err := todo.FilterByMultiCommand(notes, line)
+			filteredNotes, err := cli.FilterByMultiCommand(notes, line)
 			if err != nil {
 				log.Print("unable to filter notes: ", err)
 				continue
@@ -61,7 +62,7 @@ func main() {
 			text := todo.MarshalNotes(filteredNotes)
 			fmt.Print(text)
 		} else if regexp.MustCompile("^(add|(un)?check|delete)").MatchString(line) {
-			updatedNotes, err := todo.UpdateUsingCommand(notes, line)
+			updatedNotes, err := cli.UpdateUsingCommand(notes, line)
 			if err != nil {
 				log.Print("unable to update notes: ", err)
 				continue

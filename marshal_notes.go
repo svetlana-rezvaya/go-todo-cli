@@ -5,11 +5,11 @@ import (
 	"time"
 )
 
-const idOffsetForAlignment = 10000
+const IDOffsetForAlignment = 10000
 
 func marshalNote(note Note) string {
 	// add an offset for all ids to have the same width
-	id := strconv.Itoa(note.ID + idOffsetForAlignment)
+	id := strconv.Itoa(note.ID + IDOffsetForAlignment)
 
 	flag := ""
 	if note.IsDone {
