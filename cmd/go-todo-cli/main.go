@@ -11,6 +11,7 @@ import (
 
 	todo "github.com/svetlana-rezvaya/go-todo-cli"
 	"github.com/svetlana-rezvaya/go-todo-cli/cli"
+	"github.com/svetlana-rezvaya/go-todo-cli/storing"
 )
 
 const helpMessage = "" +
@@ -30,7 +31,7 @@ func main() {
 		flag.String("storage", "storage.data", "path to a storage file")
 	flag.Parse()
 
-	notes, err := todo.LoadNotes(*storageFilename)
+	notes, err := storing.LoadNotes(*storageFilename)
 	if err != nil {
 		log.Fatal("unable to load notes: ", err)
 	}
@@ -69,7 +70,7 @@ func main() {
 			}
 
 			notes = updatedNotes
-			err = todo.SaveNotes(*storageFilename, notes)
+			err = storing.SaveNotes(*storageFilename, notes)
 			if err != nil {
 				log.Print("unable to save notes: ", err)
 			}

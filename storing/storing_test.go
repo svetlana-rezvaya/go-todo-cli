@@ -1,10 +1,12 @@
-package todo
+package storing
 
 import (
 	"io/ioutil"
 	"reflect"
 	"testing"
 	"time"
+
+	todo "github.com/svetlana-rezvaya/go-todo-cli"
 )
 
 func TestLoadNotes_empty(test *testing.T) {
@@ -16,7 +18,7 @@ func TestLoadNotes_empty(test *testing.T) {
 
 	notes, err := LoadNotes(file.Name())
 
-	wantedNotes := []Note{}
+	wantedNotes := []todo.Note{}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
 	}
@@ -49,22 +51,22 @@ func TestLoadNotes_nonEmpty(test *testing.T) {
 	}
 
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 0, 0, time.UTC)
-	wantedNotes := []Note{
-		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		Note{
+	wantedNotes := []todo.Note{
+		todo.Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		todo.Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		todo.Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
 			Text:      "three",
 		},
-		Note{
+		todo.Note{
 			ID:        103,
 			CreatedAt: createdAt.Add(3 * time.Hour),
 			IsDone:    true,
 			Text:      "four",
 		},
-		Note{
+		todo.Note{
 			ID:        104,
 			CreatedAt: createdAt.Add(4 * time.Hour),
 			IsDone:    false,
@@ -119,7 +121,7 @@ func TestSaveNotes_empty(test *testing.T) {
 	}
 	file.Close()
 
-	err = SaveNotes(file.Name(), []Note{})
+	err = SaveNotes(file.Name(), []todo.Note{})
 	if err != nil {
 		test.FailNow()
 	}
@@ -142,22 +144,22 @@ func TestSaveNotes_nonEmpty(test *testing.T) {
 	file.Close()
 
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
-	notes := []Note{
-		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		Note{
+	notes := []todo.Note{
+		todo.Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		todo.Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		todo.Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
 			Text:      "three",
 		},
-		Note{
+		todo.Note{
 			ID:        103,
 			CreatedAt: createdAt.Add(3 * time.Hour),
 			IsDone:    true,
 			Text:      "four",
 		},
-		Note{
+		todo.Note{
 			ID:        104,
 			CreatedAt: createdAt.Add(4 * time.Hour),
 			IsDone:    false,
