@@ -9,8 +9,8 @@ import (
 	"regexp"
 	"strings"
 
-	todo "github.com/svetlana-rezvaya/go-todo-cli"
 	"github.com/svetlana-rezvaya/go-todo-cli/cli"
+	"github.com/svetlana-rezvaya/go-todo-cli/encoding"
 	"github.com/svetlana-rezvaya/go-todo-cli/storing"
 )
 
@@ -60,7 +60,7 @@ func main() {
 				continue
 			}
 
-			text := todo.MarshalNotes(filteredNotes)
+			text := encoding.MarshalNotes(filteredNotes)
 			fmt.Print(text)
 		} else if regexp.MustCompile("^(add|(un)?check|delete)").MatchString(line) {
 			updatedNotes, err := cli.UpdateUsingCommand(notes, line)

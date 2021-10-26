@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	todo "github.com/svetlana-rezvaya/go-todo-cli"
+	"github.com/svetlana-rezvaya/go-todo-cli/encoding"
 )
 
 func getParameter(line string, command string) string {
@@ -23,5 +23,5 @@ func getIDParameter(line string, command string) (int, error) {
 		return 0, errors.New("unable to parse the note ID: " + err.Error())
 	}
 
-	return id - todo.IDOffsetForAlignment, nil
+	return id - encoding.IDOffsetForAlignment, nil
 }

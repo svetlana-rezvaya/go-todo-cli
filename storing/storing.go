@@ -6,6 +6,7 @@ import (
 	"os"
 
 	todo "github.com/svetlana-rezvaya/go-todo-cli"
+	"github.com/svetlana-rezvaya/go-todo-cli/encoding"
 )
 
 // LoadNotes ...
@@ -24,7 +25,7 @@ func LoadNotes(storageFilename string) ([]todo.Note, error) {
 		return nil, errors.New("unable to read a storage file: " + err.Error())
 	}
 
-	notes, err := todo.UnmarshalNotes(string(textBytes))
+	notes, err := encoding.UnmarshalNotes(string(textBytes))
 	if err != nil {
 		return nil, errors.New("unable to unmarshal a storage file: " + err.Error())
 	}
@@ -40,7 +41,7 @@ func SaveNotes(storageFilename string, notes []todo.Note) error {
 	}
 	defer file.Close()
 
-	text := todo.MarshalNotes(notes)
+	text := encoding.MarshalNotes(notes)
 	_, err = file.WriteString(text)
 	if err != nil {
 		return errors.New("unable to fill a storage file: " + err.Error())

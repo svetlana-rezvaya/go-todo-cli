@@ -1,18 +1,20 @@
-package todo
+package encoding
 
 import (
 	"reflect"
 	"testing"
 	"time"
+
+	todo "github.com/svetlana-rezvaya/go-todo-cli"
 )
 
-func Test_unmarshalNote_successAndIsNotDone(test *testing.T) {
+func TestUnmarshalNote_successAndIsNotDone(test *testing.T) {
 	noteObject, err :=
-		unmarshalNote("10123 [_] 09 Dec 20 21:05 +0000 one two three")
+		UnmarshalNote("10123 [_] 09 Dec 20 21:05 +0000 one two three")
 	noteObject.CreatedAt = noteObject.CreatedAt.In(time.UTC)
 
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 0, 0, time.UTC)
-	wantedNoteObject := Note{
+	wantedNoteObject := todo.Note{
 		ID:        123,
 		CreatedAt: createdAt,
 		IsDone:    false,
@@ -27,13 +29,13 @@ func Test_unmarshalNote_successAndIsNotDone(test *testing.T) {
 	}
 }
 
-func Test_unmarshalNote_successAndIsDone(test *testing.T) {
+func TestUnmarshalNote_successAndIsDone(test *testing.T) {
 	noteObject, err :=
-		unmarshalNote("10123 [x] 09 Dec 20 21:05 +0000 one two three")
+		UnmarshalNote("10123 [x] 09 Dec 20 21:05 +0000 one two three")
 	noteObject.CreatedAt = noteObject.CreatedAt.In(time.UTC)
 
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 0, 0, time.UTC)
-	wantedNoteObject := Note{
+	wantedNoteObject := todo.Note{
 		ID:        123,
 		CreatedAt: createdAt,
 		IsDone:    true,
@@ -48,10 +50,10 @@ func Test_unmarshalNote_successAndIsDone(test *testing.T) {
 	}
 }
 
-func Test_unmarshalNote_errorWithPartCount(test *testing.T) {
-	noteObject, err := unmarshalNote("10123 [_] 09 Dec 20")
+func TestUnmarshalNote_errorWithPartCount(test *testing.T) {
+	noteObject, err := UnmarshalNote("10123 [_] 09 Dec 20")
 
-	wantedNoteObject := Note{}
+	wantedNoteObject := todo.Note{}
 	if !reflect.DeepEqual(noteObject, wantedNoteObject) {
 		test.Fail()
 	}
@@ -61,11 +63,11 @@ func Test_unmarshalNote_errorWithPartCount(test *testing.T) {
 	}
 }
 
-func Test_unmarshalNote_errorWithIncorrectID(test *testing.T) {
+func TestUnmarshalNote_errorWithIncorrectID(test *testing.T) {
 	noteObject, err :=
-		unmarshalNote("incorrect [_] 09 Dec 20 21:05 +0000 one two three")
+		UnmarshalNote("incorrect [_] 09 Dec 20 21:05 +0000 one two three")
 
-	wantedNoteObject := Note{}
+	wantedNoteObject := todo.Note{}
 	if !reflect.DeepEqual(noteObject, wantedNoteObject) {
 		test.Fail()
 	}
@@ -77,11 +79,11 @@ func Test_unmarshalNote_errorWithIncorrectID(test *testing.T) {
 	}
 }
 
-func Test_unmarshalNote_errorWithIncorrectTimestamp(test *testing.T) {
+func TestUnmarshalNote_errorWithIncorrectTimestamp(test *testing.T) {
 	noteObject, err :=
-		unmarshalNote("10123 [_] 09 12 20 21:05 +0000 one two three")
+		UnmarshalNote("10123 [_] 09 12 20 21:05 +0000 one two three")
 
-	wantedNoteObject := Note{}
+	wantedNoteObject := todo.Note{}
 	if !reflect.DeepEqual(noteObject, wantedNoteObject) {
 		test.Fail()
 	}
@@ -97,7 +99,7 @@ func Test_unmarshalNote_errorWithIncorrectTimestamp(test *testing.T) {
 func TestUnmarshalNotes_empty(test *testing.T) {
 	notes, err := UnmarshalNotes("")
 
-	wantedNotes := []Note{}
+	wantedNotes := []todo.Note{}
 	if !reflect.DeepEqual(notes, wantedNotes) {
 		test.Fail()
 	}
@@ -121,22 +123,22 @@ func TestUnmarshalNotes_success(test *testing.T) {
 	}
 
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 0, 0, time.UTC)
-	wantedNotes := []Note{
-		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		Note{
+	wantedNotes := []todo.Note{
+		todo.Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		todo.Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		todo.Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
 			Text:      "three",
 		},
-		Note{
+		todo.Note{
 			ID:        103,
 			CreatedAt: createdAt.Add(3 * time.Hour),
 			IsDone:    true,
 			Text:      "four",
 		},
-		Note{
+		todo.Note{
 			ID:        104,
 			CreatedAt: createdAt.Add(4 * time.Hour),
 			IsDone:    false,

@@ -1,34 +1,36 @@
-package todo
+package encoding
 
 import (
 	"testing"
 	"time"
+
+	todo "github.com/svetlana-rezvaya/go-todo-cli"
 )
 
-func Test_marshalNote_isNotDone(test *testing.T) {
+func TestMarshalNote_isNotDone(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
-	note := Note{
+	note := todo.Note{
 		ID:        123,
 		CreatedAt: createdAt,
 		IsDone:    false,
 		Text:      "test",
 	}
-	text := marshalNote(note)
+	text := MarshalNote(note)
 
 	if text != "10123 [_] 09 Dec 20 21:05 +0000 test" {
 		test.Fail()
 	}
 }
 
-func Test_marshalNote_isDone(test *testing.T) {
+func TestMarshalNote_isDone(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
-	note := Note{
+	note := todo.Note{
 		ID:        123,
 		CreatedAt: createdAt,
 		IsDone:    true,
 		Text:      "test",
 	}
-	text := marshalNote(note)
+	text := MarshalNote(note)
 
 	if text != "10123 [x] 09 Dec 20 21:05 +0000 test" {
 		test.Fail()
@@ -36,7 +38,7 @@ func Test_marshalNote_isDone(test *testing.T) {
 }
 
 func TestMarshalNotes_empty(test *testing.T) {
-	text := MarshalNotes([]Note{})
+	text := MarshalNotes([]todo.Note{})
 
 	if text != "" {
 		test.Fail()
@@ -45,22 +47,22 @@ func TestMarshalNotes_empty(test *testing.T) {
 
 func TestMarshalNotes_nonEmpty(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
-	notes := []Note{
-		Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
-		Note{
+	notes := []todo.Note{
+		todo.Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
+		todo.Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		todo.Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
 			IsDone:    false,
 			Text:      "three",
 		},
-		Note{
+		todo.Note{
 			ID:        103,
 			CreatedAt: createdAt.Add(3 * time.Hour),
 			IsDone:    true,
 			Text:      "four",
 		},
-		Note{
+		todo.Note{
 			ID:        104,
 			CreatedAt: createdAt.Add(4 * time.Hour),
 			IsDone:    false,

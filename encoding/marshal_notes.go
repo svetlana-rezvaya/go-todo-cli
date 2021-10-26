@@ -1,13 +1,17 @@
-package todo
+package encoding
 
 import (
 	"strconv"
 	"time"
+
+	todo "github.com/svetlana-rezvaya/go-todo-cli"
 )
 
+// IDOffsetForAlignment ...
 const IDOffsetForAlignment = 10000
 
-func marshalNote(note Note) string {
+// MarshalNote ...
+func MarshalNote(note todo.Note) string {
 	// add an offset for all ids to have the same width
 	id := strconv.Itoa(note.ID + IDOffsetForAlignment)
 
@@ -24,10 +28,10 @@ func marshalNote(note Note) string {
 }
 
 // MarshalNotes ...
-func MarshalNotes(notes []Note) string {
+func MarshalNotes(notes []todo.Note) string {
 	result := ""
 	for _, note := range notes {
-		line := marshalNote(note)
+		line := MarshalNote(note)
 		result = result + line + "\n"
 	}
 

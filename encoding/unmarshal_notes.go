@@ -1,21 +1,24 @@
-package todo
+package encoding
 
 import (
 	"errors"
 	"strconv"
 	"strings"
 	"time"
+
+	todo "github.com/svetlana-rezvaya/go-todo-cli"
 )
 
-func unmarshalNote(line string) (Note, error) {
+// UnmarshalNote ...
+func UnmarshalNote(line string) (todo.Note, error) {
 	parts := strings.SplitN(line, " ", 8)
 	if len(parts) < 7 {
-		return Note{}, errors.New("not enough parts in the line")
+		return todo.Note{}, errors.New("not enough parts in the line")
 	}
 
 	id, err := strconv.Atoi(parts[0])
 	if err != nil {
-		return Note{}, errors.New("unable to parse the note ID: " + err.Error())
+		return todo.Note{}, errors.New("unable to parse the note ID: " + err.Error())
 	}
 	id = id - IDOffsetForAlignment
 
@@ -23,26 +26,26 @@ func unmarshalNote(line string) (Note, error) {
 	createdAtStr := strings.Join(createdAtParts, " ")
 	createdAt, err := time.Parse(time.RFC822Z, createdAtStr)
 	if err != nil {
-		return Note{},
+		return todo.Note{},
 			errors.New("unable to parse the note creation timestamp: " + err.Error())
 	}
 
 	isDone := parts[1] == "[x]"
 
-	note := Note{ID: id, CreatedAt: createdAt, IsDone: isDone, Text: parts[7]}
+	note := todo.Note{ID: id, CreatedAt: createdAt, IsDone: isDone, Text: parts[7]}
 	return note, nil
 }
 
 // UnmarshalNotes ...
-func UnmarshalNotes(text string) ([]Note, error) {
-	notes := []Note{}
+func UnmarshalNotes(text string) ([]todo.Note, error) {
+	notes := []todo.Note{}
 	lines := strings.Split(text, "\n")
 	for lineIndex, line := range lines {
 		if line == "" {
 			continue
 		}
 
-		note, err := unmarshalNote(line)
+		note, err := UnmarshalNote(line)
 		if err != nil {
 			lineIndexStr := strconv.Itoa(lineIndex + 1)
 			return nil, errors.New(
