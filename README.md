@@ -10,7 +10,7 @@ The utility for maintaining a to-do list with terminal user interface.
 ## Installation
 
 ```
-$ go get github.com/svetlana-rezvaya/go-todo-cli
+$ go get github.com/svetlana-rezvaya/go-todo-cli/...
 ```
 
 ## Usage
