@@ -1,7 +1,7 @@
 package storing
 
 import (
-	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -16,18 +16,18 @@ func LoadNotes(storageFilename string) ([]todo.Note, error) {
 		if os.IsNotExist(err) {
 			return []todo.Note{}, nil
 		}
-		return nil, errors.New("unable to open a storage file: " + err.Error())
+		return nil, fmt.Errorf("unable to open a storage file: %s", err)
 	}
 	defer file.Close()
 
 	textBytes, err := ioutil.ReadAll(file)
 	if err != nil {
-		return nil, errors.New("unable to read a storage file: " + err.Error())
+		return nil, fmt.Errorf("unable to read a storage file: %s", err)
 	}
 
 	notes, err := encoding.UnmarshalNotes(string(textBytes))
 	if err != nil {
-		return nil, errors.New("unable to unmarshal a storage file: " + err.Error())
+		return nil, fmt.Errorf("unable to unmarshal a storage file: %s", err)
 	}
 
 	return notes, nil
@@ -37,14 +37,14 @@ func LoadNotes(storageFilename string) ([]todo.Note, error) {
 func SaveNotes(storageFilename string, notes []todo.Note) error {
 	file, err := os.Create(storageFilename)
 	if err != nil {
-		return errors.New("unable to create a storage file: " + err.Error())
+		return fmt.Errorf("unable to create a storage file: %s", err)
 	}
 	defer file.Close()
 
 	text := encoding.MarshalNotes(notes)
 	_, err = file.WriteString(text)
 	if err != nil {
-		return errors.New("unable to fill a storage file: " + err.Error())
+		return fmt.Errorf("unable to fill a storage file: %s", err)
 	}
 
 	return nil

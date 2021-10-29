@@ -2,6 +2,7 @@ package cli
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -20,7 +21,7 @@ func getIDParameter(line string, command string) (int, error) {
 
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		return 0, errors.New("unable to parse the note ID: " + err.Error())
+		return 0, fmt.Errorf("unable to parse the note ID: %s", err)
 	}
 
 	return id - encoding.IDOffsetForAlignment, nil

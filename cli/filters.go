@@ -2,7 +2,7 @@ package cli
 
 import (
 	"errors"
-	"strconv"
+	"fmt"
 	"strings"
 	"time"
 
@@ -21,7 +21,7 @@ func FilterByCommand(notes []todo.Note, line string) ([]todo.Note, error) {
 		} else if parameter == "" {
 			filteredNotes = notes
 		} else {
-			return nil, errors.New("unknown parameter for 'list' command: " + parameter)
+			return nil, fmt.Errorf("unknown parameter for 'list' command: %s", parameter)
 		}
 	} else if strings.HasPrefix(line, "find") {
 		query := getParameter(line, "find")
@@ -39,12 +39,12 @@ func FilterByCommand(notes []todo.Note, line string) ([]todo.Note, error) {
 		date, err := time.Parse("02 Jan 06", parameter)
 		if err != nil {
 			return nil,
-				errors.New("unable to parse the 'date' command parameter: " + err.Error())
+				fmt.Errorf("unable to parse the 'date' command parameter: %s", err)
 		}
 
 		filteredNotes = todo.FilterByDate(notes, date)
 	} else {
-		return nil, errors.New("unknown command: " + line)
+		return nil, fmt.Errorf("unknown command: %s", line)
 	}
 
 	return filteredNotes, nil
@@ -61,10 +61,7 @@ func FilterByMultiCommand(notes []todo.Note, line string) ([]todo.Note, error) {
 
 		filteredNotes, err := FilterByCommand(notes, command)
 		if err != nil {
-			return nil, errors.New(
-				"unable to filter by command #" + strconv.Itoa(index+1) + ": " +
-					err.Error(),
-			)
+			return nil, fmt.Errorf("unable to filter by command #%d: %s", index+1, err)
 		}
 
 		notes = filteredNotes

@@ -2,6 +2,7 @@ package encoding
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -18,7 +19,7 @@ func UnmarshalNote(line string) (todo.Note, error) {
 
 	id, err := strconv.Atoi(parts[0])
 	if err != nil {
-		return todo.Note{}, errors.New("unable to parse the note ID: " + err.Error())
+		return todo.Note{}, fmt.Errorf("unable to parse the note ID: %s", err)
 	}
 	id = id - IDOffsetForAlignment
 
@@ -27,7 +28,7 @@ func UnmarshalNote(line string) (todo.Note, error) {
 	createdAt, err := time.Parse(time.RFC822Z, createdAtStr)
 	if err != nil {
 		return todo.Note{},
-			errors.New("unable to parse the note creation timestamp: " + err.Error())
+			fmt.Errorf("unable to parse the note creation timestamp: %s", err)
 	}
 
 	isDone := parts[1] == "[x]"
@@ -47,11 +48,8 @@ func UnmarshalNotes(text string) ([]todo.Note, error) {
 
 		note, err := UnmarshalNote(line)
 		if err != nil {
-			lineIndexStr := strconv.Itoa(lineIndex + 1)
-			return nil, errors.New(
-				"unable to unmarshal the note in line #" + lineIndexStr + ": " +
-					err.Error(),
-			)
+			return nil,
+				fmt.Errorf("unable to unmarshal the note in line #%d: %s", lineIndex+1, err)
 		}
 
 		notes = append(notes, note)

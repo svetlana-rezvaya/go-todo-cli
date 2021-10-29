@@ -33,7 +33,7 @@ func main() {
 
 	notes, err := storing.LoadNotes(*storageFilename)
 	if err != nil {
-		log.Fatal("unable to load notes: ", err)
+		log.Fatalf("unable to load notes: %s", err)
 	}
 
 	fmt.Print(helpMessage)
@@ -44,7 +44,7 @@ func main() {
 
 		line, err := reader.ReadString('\n')
 		if err != nil {
-			log.Print("unable to read the line: ", err)
+			log.Printf("unable to read the line: %s", err)
 			continue
 		}
 
@@ -56,7 +56,7 @@ func main() {
 		if regexp.MustCompile("^(list|find|date)").MatchString(line) {
 			filteredNotes, err := cli.FilterByMultiCommand(notes, line)
 			if err != nil {
-				log.Print("unable to filter notes: ", err)
+				log.Printf("unable to filter notes: %s", err)
 				continue
 			}
 
@@ -65,21 +65,21 @@ func main() {
 		} else if regexp.MustCompile("^(add|(un)?check|delete)").MatchString(line) {
 			updatedNotes, err := cli.UpdateUsingCommand(notes, line)
 			if err != nil {
-				log.Print("unable to update notes: ", err)
+				log.Printf("unable to update notes: %s", err)
 				continue
 			}
 
 			notes = updatedNotes
 			err = storing.SaveNotes(*storageFilename, notes)
 			if err != nil {
-				log.Print("unable to save notes: ", err)
+				log.Printf("unable to save notes: %s", err)
 			}
 		} else if line == "help" {
 			fmt.Print(helpMessage)
 		} else if line == "exit" {
 			os.Exit(0)
 		} else {
-			log.Print("unknown command: ", line)
+			log.Printf("unknown command: %s", line)
 		}
 	}
 }
