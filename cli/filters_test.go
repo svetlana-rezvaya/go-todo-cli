@@ -149,7 +149,12 @@ func TestFilterByCommand_date(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
 	notes := []todo.Note{
 		todo.Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		todo.Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		todo.Note{
+			ID:        101,
+			CreatedAt: createdAt.Add(time.Hour),
+			IsDone:    true,
+			Text:      "two",
+		},
 		todo.Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
@@ -173,7 +178,12 @@ func TestFilterByCommand_date(test *testing.T) {
 
 	wantedNotes := []todo.Note{
 		todo.Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		todo.Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		todo.Note{
+			ID:        101,
+			CreatedAt: createdAt.Add(time.Hour),
+			IsDone:    true,
+			Text:      "two",
+		},
 		todo.Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
@@ -194,7 +204,12 @@ func TestFilterByCommand_dateWithoutParameter(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
 	notes := []todo.Note{
 		todo.Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		todo.Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		todo.Note{
+			ID:        101,
+			CreatedAt: createdAt.Add(time.Hour),
+			IsDone:    true,
+			Text:      "two",
+		},
 		todo.Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
@@ -230,7 +245,12 @@ func TestFilterByCommand_dateWithIncorrectParameter(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 20, 123, time.UTC)
 	notes := []todo.Note{
 		todo.Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		todo.Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		todo.Note{
+			ID:        101,
+			CreatedAt: createdAt.Add(time.Hour),
+			IsDone:    true,
+			Text:      "two",
+		},
 		todo.Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),

@@ -45,7 +45,8 @@ func FilterByTime(notes []Note, minimum time.Time, maximum time.Time) []Note {
 
 // FilterByDate ...
 func FilterByDate(notes []Note, date time.Time) []Note {
-	minimum := date.Truncate(24 * time.Hour)
-	maximum := minimum.Add(24 * time.Hour)
+	const day = 24 * time.Hour
+	minimum := date.Truncate(day)
+	maximum := minimum.Add(day)
 	return FilterByTime(notes, minimum, maximum)
 }

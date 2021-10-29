@@ -125,7 +125,12 @@ func TestUnmarshalNotes_success(test *testing.T) {
 	createdAt := time.Date(2020, time.December, 9, 21, 5, 0, 0, time.UTC)
 	wantedNotes := []todo.Note{
 		todo.Note{ID: 100, CreatedAt: createdAt, IsDone: false, Text: "one"},
-		todo.Note{ID: 101, CreatedAt: createdAt.Add(time.Hour), IsDone: true, Text: "two"},
+		todo.Note{
+			ID:        101,
+			CreatedAt: createdAt.Add(time.Hour),
+			IsDone:    true,
+			Text:      "two",
+		},
 		todo.Note{
 			ID:        102,
 			CreatedAt: createdAt.Add(2 * time.Hour),
