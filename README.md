@@ -1,6 +1,9 @@
 # go-todo-cli
 
+[![GoDoc](https://godoc.org/github.com/svetlana-rezvaya/go-todo-cli?status.svg)](https://godoc.org/github.com/svetlana-rezvaya/go-todo-cli)
 [![Go Report Card](https://goreportcard.com/badge/github.com/svetlana-rezvaya/go-todo-cli)](https://goreportcard.com/report/github.com/svetlana-rezvaya/go-todo-cli)
+[![Build Status](https://app.travis-ci.com/svetlana-rezvaya/go-todo-cli.svg?branch=master)](https://app.travis-ci.com/svetlana-rezvaya/go-todo-cli)
+[![codecov](https://codecov.io/gh/svetlana-rezvaya/go-todo-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/svetlana-rezvaya/go-todo-cli)
 
 The utility for maintaining a to-do list with terminal user interface.
 
