@@ -32,7 +32,10 @@ Options:
   - `add TEXT` &mdash; add a new unchecked note with specified text and current timestamp;
   - `check ID` &mdash; check the note with specified ID;
   - `uncheck ID` &mdash; uncheck the note with specified ID;
-  - `delete ID` &mdash; delete the note with specified ID.
+  - `delete ID` &mdash; delete the note with specified ID;
+- misc. commands:
+  - `help` &mdash; show the help message;
+  - `exit` &mdash; exit.
 
 To combine filtering commands, use the vertical bar (`|`).
 

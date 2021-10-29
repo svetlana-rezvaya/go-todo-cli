@@ -24,6 +24,9 @@ const helpMessage = "" +
 	"  check ID           check the note with specified ID\n" +
 	"  uncheck ID         uncheck the note with specified ID\n" +
 	"  delete ID          delete the note with specified ID\n" +
+	"misc. commands:\n" +
+	"  help               show the help message\n" +
+	"  exit               exit\n" +
 	"(to combine filtering commands, use the vertical bar ('|'))\n"
 
 func main() {
